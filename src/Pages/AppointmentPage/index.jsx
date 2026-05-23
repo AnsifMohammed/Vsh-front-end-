@@ -3,7 +3,7 @@ import Button from '../../Components/Common/Button';
 import React, { useState } from 'react';
 import { useToast } from '../../Components/Common/ToastProvider';
 import { Calendar, Phone, Mail, Clock, CheckCircle, MessageCircle } from 'lucide-react';
-
+import api from "../../api/api";
 
 // Main Appointment Booking Component
 const AppointmentPage = () => {
@@ -19,8 +19,10 @@ const AppointmentPage = () => {
     preferredDate: '',
     preferredTime: '',
     additionalNotes: '',
-    sendReminder: false,
   });
+
+  // Get today's date for min date validation
+  const today = new Date().toISOString().split('T')[0];
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -28,6 +30,18 @@ const AppointmentPage = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+  };
+
+  // Validate phone number (Indian format)
+  const isValidPhone = (phone) => {
+    const phoneRegex = /^[6-9]\d{9}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+  };
+
+  // Validate age
+  const isValidAge = (age) => {
+    const ageNum = parseInt(age);
+    return ageNum >= 1 && ageNum <= 120;
   };
 
   const handleSubmit = async (e) => {
@@ -46,23 +60,33 @@ const AppointmentPage = () => {
       return;
     }
 
+    // Phone validation
+    if (!isValidPhone(formData.phoneNumber)) {
+      toast.error("Please enter a valid 10-digit phone number");
+      return;
+    }
+
+    // Age validation
+    if (!isValidAge(formData.age)) {
+      toast.error("Please enter a valid age between 1 and 120");
+      return;
+    }
+
+    // Date validation - don't allow past dates
+    const selectedDate = new Date(formData.preferredDate);
+    const todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
+    if (selectedDate < todayDate) {
+      toast.error("Please select a future date");
+      return;
+    }
+
     try {
       setLoading(true);
 
-      const response = await fetch(
-        "http://localhost:5000/api/appointments",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await api.post("/appointments", formData);
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (response.data.success) {
         toast.success("Appointment booked successfully!");
 
         // Reset form
@@ -76,19 +100,20 @@ const AppointmentPage = () => {
           preferredDate: '',
           preferredTime: '',
           additionalNotes: '',
-          sendReminder: false,
         });
       } else {
         toast.error("Failed to book appointment");
       }
     } catch (error) {
       console.error(error);
-      toast.error("Server error. Please try again later.");
+      toast.error(
+        error.response?.data?.message ||
+        "Server error. Please try again later."
+      );
     } finally {
       setLoading(false);
     }
   };
-
 
   const handleWhatsApp = async () => {
     if (
@@ -102,7 +127,13 @@ const AppointmentPage = () => {
       return;
     }
 
-    const whatsappNumber = "919876543210"; // 🔴 Replace with clinic number
+    // Phone validation
+    if (!isValidPhone(formData.phoneNumber)) {
+      toast.error("Please enter a valid 10-digit phone number");
+      return;
+    }
+
+    const whatsappNumber = "7708555635";
 
     const message = `
 New Appointment Request 🏥
@@ -126,7 +157,6 @@ New Appointment Request 🏥
 
     window.open(whatsappURL, "_blank");
   };
-
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -171,6 +201,8 @@ New Appointment Request 🏥
                       label="Age"
                       name="age"
                       type="number"
+                      min="1"
+                      max="120"
                       value={formData.age}
                       onChange={handleChange}
                       placeholder="Enter your age"
@@ -184,7 +216,7 @@ New Appointment Request 🏥
                       type="tel"
                       value={formData.phoneNumber}
                       onChange={handleChange}
-                      placeholder="Enter phone number"
+                      placeholder="Enter 10-digit phone number"
                       required
                     />
                     <FormInput
@@ -214,10 +246,15 @@ New Appointment Request 🏥
                         required
                       >
                         <option value="">Select specialty</option>
-                        <option value="cardiology">Cardiology</option>
-                        <option value="dermatology">Dermatology</option>
-                        <option value="pediatrics">Pediatrics</option>
-                        <option value="orthopedics">Orthopedics</option>
+                        <option value="IVF & Fertility Treatment">IVF & Fertility Treatment</option>
+                        <option value="Gynecology">Gynecology</option>
+                        <option value="Obstetrics">Obstetrics</option>
+                        <option value="Laparoscopy">Laparoscopy</option>
+                        <option value="Andrology">Andrology</option>
+                        <option value="Parental Care">Parental Care</option>
+                        <option value="Ultrasonography">Ultrasonography</option>
+                        <option value="Oncology">Oncology</option>
+                        <option value="General Consultation">General Consultation</option>
                       </select>
                     </div>
                     <div>
@@ -230,23 +267,34 @@ New Appointment Request 🏥
                         onChange={handleChange}
                         className="w-full px-4 py-2.5 text-base rounded-md border border-gray-300 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 outline-none"
                       >
-                        <option value="">Any doctor</option>
-                        <option value="dr-smith">Dr. Smith</option>
-                        <option value="dr-johnson">Dr. Johnson</option>
-                        <option value="dr-williams">Dr. Williams</option>
+                        <option value="">Any Available Doctor</option>
+                        <option value="Dr. Shanmugapriya">Dr. Shanmugapriya (Fertility Specialist)</option>
+                        <option value="Dr. Robin">Dr. Robin (Anaesthetist)</option>
+                        <option value="Dr. Aravind">Dr. Aravind (Paediatrician & Neonatologist)</option>
+                        <option value="Dr. Srividhya">Dr. Srividhya (Embryologist)</option>
+                        <option value="Dr. Kurunji">Dr. Kurunji (Sonologist)</option>
+                        <option value="Dr. Patturajan">Dr. Patturajan (Specialist)</option>
+                        <option value="Dr. Arun">Dr. Arun (Anaesthetist)</option>
+                        <option value="Dr. Shiva">Dr. Shiva (Laparoscopic Surgeon)</option>
+                        <option value="Dr. Babitha">Dr. Babitha (Specialist)</option>
                       </select>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                    <FormInput
-                      label="Preferred Date"
-                      name="preferredDate"
-                      type="date"
-                      value={formData.preferredDate}
-                      onChange={handleChange}
-                      placeholder="MM/DD/YYYY"
-                      required
-                    />
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Preferred Date <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        name="preferredDate"
+                        value={formData.preferredDate}
+                        onChange={handleChange}
+                        min={today}
+                        className="w-full px-4 py-2.5 text-base rounded-md border border-gray-300 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 outline-none"
+                        required
+                      />
+                    </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1.5">
                         Preferred Time <span className="text-red-500">*</span>
@@ -259,12 +307,18 @@ New Appointment Request 🏥
                         required
                       >
                         <option value="">Select time</option>
-                        <option value="09:00">09:00 AM</option>
-                        <option value="10:00">10:00 AM</option>
-                        <option value="11:00">11:00 AM</option>
-                        <option value="14:00">02:00 PM</option>
-                        <option value="15:00">03:00 PM</option>
-                        <option value="16:00">04:00 PM</option>
+                        <optgroup label="Morning">
+                          <option value="09:00 AM">09:00 AM</option>
+                          <option value="10:00 AM">10:00 AM</option>
+                          <option value="11:00 AM">11:00 AM</option>
+                          <option value="12:00 PM">12:00 PM</option>
+                        </optgroup>
+                        <optgroup label="Evening">
+                          <option value="05:00 PM">05:00 PM</option>
+                          <option value="06:00 PM">06:00 PM</option>
+                          <option value="07:00 PM">07:00 PM</option>
+                          <option value="08:00 PM">08:00 PM</option>
+                        </optgroup>
                       </select>
                     </div>
                   </div>
@@ -285,30 +339,15 @@ New Appointment Request 🏥
                   />
                 </div>
 
-                {/* Checkbox */}
-                <div className="mb-6">
-                  <label className="flex items-start gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="sendReminder"
-                      checked={formData.sendReminder}
-                      onChange={handleChange}
-                      className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
-                    />
-                    <span className="text-sm text-gray-700">
-                      Send appointment reminder via WhatsApp
-                    </span>
-                  </label>
-                </div>
-
                 {/* Buttons */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Button
                     onClick={handleSubmit}
                     variant="primary"
                     fullWidth
+                    disabled={loading}
                   >
-                    Confirm Booking
+                    {loading ? "Booking..." : "Confirm Booking"}
                   </Button>
                   <Button
                     onClick={handleWhatsApp}
@@ -333,21 +372,21 @@ New Appointment Request 🏥
                   <Phone className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Call Us</p>
-                    <p className="text-sm text-gray-600">+91 98765 43210</p>
+                    <p className="text-sm text-gray-600">7708555635</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <MessageCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">WhatsApp</p>
-                    <p className="text-sm text-gray-600">Chat with us</p>
+                    <p className="text-sm text-gray-600">77085556354</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Mail className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Email</p>
-                    <p className="text-sm text-gray-600">info@healthcare.com</p>
+                    <p className="text-sm text-gray-600">info@vayushrihospital.com</p>
                   </div>
                 </div>
               </div>
@@ -361,16 +400,20 @@ New Appointment Request 🏥
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-700">Monday - Friday</span>
-                  <span className="font-medium text-gray-900">8:00 AM - 6:00 PM</span>
+                  <span className="text-gray-700">Monday - Saturday</span>
+                  <span className="font-medium text-gray-900">9:00 AM - 1:00 PM</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-700">Saturday</span>
-                  <span className="font-medium text-gray-900">9:00 AM - 4:00 PM</span>
+                  <span className="text-gray-700">Monday - Saturday</span>
+                  <span className="font-medium text-gray-900">5:00 PM - 9:00 PM</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Sunday</span>
-                  <span className="font-medium text-gray-900">10:00 AM - 2:00 PM</span>
+                  <span className="font-medium text-orange-600">Emergencies Only</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Emergency Services</span>
+                  <span className="font-medium text-red-600">24/7 Round the Clock</span>
                 </div>
               </div>
               <p className="text-xs text-gray-500 mt-3">

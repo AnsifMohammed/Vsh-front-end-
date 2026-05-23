@@ -76,20 +76,20 @@ const SpecialistDoctors = () => {
     },
     {
       id: 3,
-      name: "Dr. Sneha",
-      specialization: "Obstetrician",
-      credentials: "MD, DGO, Fellowship in IVF",
-      experience: "15+ Years",
-      description: "Expert in managing complex pregnancies with a focus on maternal and fetal wellness throughout pregnancy.",
+      name: "Dr. Srividhya",
+      specialization: "Embryologist",
+      credentials: "18 years experience. PGD pgs, ICSI freezing thawing",
+      experience: "18+ Years",
+      description: "Expert embryologist specializing in PGD, PGS, ICSI freezing and thawing techniques.",
       image: imgSneha
     },
     {
       id: 4,
       name: "Dr. Aravind",
-      specialization: "Reproductive Medicine",
-      credentials: "MD, DGO, Fellowship in IVF",
+      specialization: "Paediatrician and Neonatologist",
+      credentials: "General and Vaccination Consultant",
       experience: "12+ Years",
-      description: "Specialist in reproductive medicine dedicated to helping couples achieve parenthood through cutting-edge fertility treatments.",
+      description: "Expert in paediatrics and neonatology with specialization in general consultation and vaccination programs.",
       image: imgAravind
     }
   ];

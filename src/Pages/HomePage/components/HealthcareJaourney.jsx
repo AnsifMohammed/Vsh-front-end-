@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { Calculator } from 'lucide-react';
 
 const HealthcareJourney = ({ selectedPath, onSelectPath }) => {
 
   const journeyData = {
-    woman: {
+    women: {
       title: "I'm a Woman",
       description: "Access comprehensive women's health services, fertility treatments, pregnancy care, and gynecological consultations tailored for you.",
       bgColor: "bg-pink-50",
@@ -14,7 +13,7 @@ const HealthcareJourney = ({ selectedPath, onSelectPath }) => {
         { icon: "🤰", text: "Pregnancy & Maternity Care" }
       ]
     },
-    man: {
+    men: {
       title: "I'm a Man",
       description: "Access andrology services, male fertility treatments, and supportive care designed to help you and your partner on your fertility journey.",
       bgColor: "bg-blue-50",
@@ -48,7 +47,7 @@ const HealthcareJourney = ({ selectedPath, onSelectPath }) => {
         {/* Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Woman Card */}
-          <div className={`${journeyData.woman.bgColor} rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100`}>
+          <div className={`${journeyData.women.bgColor} rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100`}>
             <div className="flex flex-col items-center text-center">
               {/* Icon */}
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-md">
@@ -59,17 +58,17 @@ const HealthcareJourney = ({ selectedPath, onSelectPath }) => {
 
               {/* Title */}
               <h2 className=" mb-3 card-title ">
-                {journeyData.woman.title}
+                {journeyData.women.title}
               </h2>
 
               {/* Description */}
               <p className="card-sub-title text-gray-600  mb-6 leading-relaxed">
-                {journeyData.woman.description}
+                {journeyData.women.description}
               </p>
 
               {/* Features */}
               <div className="w-full space-y-3 mb-6">
-                {journeyData.woman.features.map((feature, index) => (
+                {journeyData.women.features.map((feature, index) => (
                   <div key={index} className="flex items-center gap-3 text-left">
                     <span className="text-xl">{feature.icon}</span>
                     <span className="text-sm text-gray-700 font-bold">{feature.text}</span>
@@ -79,16 +78,16 @@ const HealthcareJourney = ({ selectedPath, onSelectPath }) => {
 
               {/* Button */}
               <button
-                className={`w-full px-4 py-2.5 border-2 border-pink-300 text-pink-700 hover:bg-pink-100 rounded-lg font-medium transition-colors ${selectedPath === 'woman' ? 'bg-pink-100 ring-2 ring-pink-400' : ''}`}
-                onClick={() => onSelectPath(selectedPath === 'woman' ? null : 'woman')}
+                className={`w-full px-4 py-2.5 border-2 border-pink-300 text-pink-700 hover:bg-pink-100 rounded-lg font-medium transition-colors ${selectedPath === 'women' ? 'bg-pink-100 ring-2 ring-pink-400' : ''}`}
+                onClick={() => onSelectPath(selectedPath === 'women' ? null : 'women')}
               >
-                {selectedPath === 'woman' ? "Viewing Women's Services" : "Explore Women's Services"}
+                {selectedPath === 'women' ? "Viewing Women's Services" : "Explore Women's Services"}
               </button>
             </div>
           </div>
 
           {/* Man Card */}
-          <div className={`${journeyData.man.bgColor} rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100`}>
+          <div className={`${journeyData.men.bgColor} rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100`}>
             <div className="flex flex-col items-center text-center">
               {/* Icon */}
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-md">
@@ -99,17 +98,17 @@ const HealthcareJourney = ({ selectedPath, onSelectPath }) => {
 
               {/* Title */}
               <h2 className="card-title  mb-3 ">
-                {journeyData.man.title}
+                {journeyData.men.title}
               </h2>
 
               {/* Description */}
               <p className="text-gray-600 card-sub-title mb-6 leading-relaxed">
-                {journeyData.man.description}
+                {journeyData.men.description}
               </p>
 
               {/* Features */}
               <div className="w-full space-y-3 mb-6">
-                {journeyData.man.features.map((feature, index) => (
+                {journeyData.men.features.map((feature, index) => (
                   <div key={index} className="flex items-center gap-3 text-left">
                     <span className="text-xl">{feature.icon}</span>
                     <span className="text-sm text-gray-700 font-bold">{feature.text}</span>
@@ -119,10 +118,10 @@ const HealthcareJourney = ({ selectedPath, onSelectPath }) => {
 
               {/* Button */}
               <button
-                className={`w-full px-4 py-2.5 border-2 border-blue-300 text-blue-700 hover:bg-blue-100 rounded-lg font-medium transition-colors ${selectedPath === 'man' ? 'bg-blue-100 ring-2 ring-blue-400' : ''}`}
-                onClick={() => onSelectPath(selectedPath === 'man' ? null : 'man')}
+                className={`w-full px-4 py-2.5 border-2 border-blue-300 text-blue-700 hover:bg-blue-100 rounded-lg font-medium transition-colors ${selectedPath === 'men' ? 'bg-blue-100 ring-2 ring-blue-400' : ''}`}
+                onClick={() => onSelectPath(selectedPath === 'men' ? null : 'men')}
               >
-                {selectedPath === 'man' ? "Viewing Men's Services" : "Explore Men's Services"}
+                {selectedPath === 'men' ? "Viewing Men's Services" : "Explore Men's Services"}
               </button>
             </div>
           </div>
@@ -132,21 +131,12 @@ const HealthcareJourney = ({ selectedPath, onSelectPath }) => {
         <div className="text-center px-2">
           <p className="text-gray-600">
             Not sure which path is right for you?{' '}
-            <button className="text-blue-600 hover:text-blue-700 font-semibold hover:underline">
+            <button className="text-purple-600 hover:text-purple-700 font-semibold hover:underline">
               Book a consultation
             </button>
             , and our specialists will guide you.
           </p>
         </div>
-
-        {/* Selected Path Display */}
-        {selectedPath && (
-          <div className="mt-8 p-6 bg-green-50 border border-green-200 rounded-lg text-center">
-            <p className="text-green-800 font-medium">
-              ✅ You've selected: <span className="font-bold">{selectedPath === 'woman' ? "Women's Healthcare Journey" : "Men's Healthcare Journey"}</span>
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

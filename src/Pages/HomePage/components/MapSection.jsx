@@ -3,8 +3,8 @@ import { MapPin } from 'lucide-react';
 
 export default function MapSection() {
 
-  const lat = 11.01;
-  const lng = 76.95;
+  const lat = 12.97;
+  const lng = 80.16;
 
    // Open Map View
   const handleViewOnMap = () => {
@@ -22,7 +22,7 @@ export default function MapSection() {
       <div className="relative rounded-md overflow-hidden shadow-lg h-96 sm:h-80 md:h-72 lg:h-64">
         {/* Google Maps Embed */}
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.3!2d76.95!3d11.01!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDAwJzM2LjAiTiA3NsKwNTcnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.1!2d80.16!3d12.97!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU4JzEyLjAiTiA4MMKwMDknMzYuMCJF!5e0!3m2!1sen!2sin!4v1234567890"
           width="100%"
           height="100%"
           style={{ border: 0 }}
@@ -51,7 +51,7 @@ export default function MapSection() {
           
           {/* Address */}
           <p className="text-gray-200 text-xs sm:text-sm mb-4 sm:mb-6 max-w-md px-4">
-            123 Medical Center Road, Tejpur, Sonapur - 2000123 Tamil Nadu, India
+            200 feet radial road, Opp to Embassy, Pallavaram, Chennai - 600044, Tamil Nadu, India
           </p>
           
           {/* Buttons */}

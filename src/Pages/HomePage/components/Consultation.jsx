@@ -179,11 +179,11 @@ const Consultation = () => {
                     <Phone className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-sm font-semibold text-gray-900">Call Us</p>
-                      <a
-                        href="tel:+916789654321"
+                        <a
+                        href="tel:7708555635"
                         className="text-sm text-purple-600 hover:underline"
                       >
-                        +91 6789654321
+                        7708555635
                       </a>
                       <p className="text-xs text-gray-500">24/7 Emergency Line</p>
                     </div>
@@ -230,8 +230,9 @@ const Consultation = () => {
                     <MapPin className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-sm font-semibold text-gray-900">Location</p>
-                      <p className="text-sm text-gray-600">123 Healthcare Street</p>
-                      <p className="text-sm text-gray-600">Mumbai, Maharashtra</p>
+                      <p className="text-sm text-gray-600">200 feet radial road</p>
+                      <p className="text-sm text-gray-600">Opp to Embassy, Pallavaram</p>
+                      <p className="text-sm text-gray-600">Chennai - 600044</p>
                     </div>
                   </div>
                 </div>
@@ -247,16 +248,16 @@ const Consultation = () => {
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="card-sub-title sm:text-sm text-gray-600">Monday - Saturday</span>
-                  <span className="text-xs sm:text-sm font-semibold text-purple-600">8:30 AM - 8:00 PM</span>
+                  <span className="card-sub-title sm:text-sm text-gray-600">Monday - Saturday (OPD)</span>
+                  <span className="text-xs sm:text-sm font-semibold text-purple-600">9:00 AM - 1:00 PM, 5:00 PM - 9:00 PM</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="card-sub-title sm:text-sm text-gray-600">Sunday</span>
-                  <span className="text-xs sm:text-sm font-semibold text-purple-600">9:00 AM - 6:00 PM</span>
+                  <span className="text-xs sm:text-sm font-semibold text-orange-600">Emergencies Only</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="card-sub-title sm:text-sm text-gray-600">Emergency</span>
-                  <span className="text-xs sm:text-sm font-semibold text-red-600">24/7 Available</span>
+                  <span className="card-sub-title sm:text-sm text-gray-600">Emergency Services</span>
+                  <span className="text-xs sm:text-sm font-semibold text-red-600">24/7 Round the Clock</span>
                 </div>
               </div>
             </Card>
@@ -271,7 +272,7 @@ const Consultation = () => {
                     24/7 emergency services available for critical cases
                   </p>
                   <a
-                    href="tel:+916789654321"
+                    href="tel:7708555635"
                     className="card-sub-title inline-flex items-center justify-center
              text-yellow-700 border border-yellow-400
              px-3 py-1.5 rounded-md

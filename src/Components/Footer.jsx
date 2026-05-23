@@ -25,7 +25,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#1a1a1a] text-white">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-6 py-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand Section */}
           <div className="space-y-4">
@@ -97,9 +97,9 @@ export default function Footer() {
                 <MapPin size={18} className="text-gray-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-gray-400">
                   <p className="font-medium text-white mb-0.5 text-nunito">Address</p>
-                  <p>123 Medical Center Road,</p>
-                  <p>T. Nagar, Chennai - 600017</p>
-                  <p>Tamil Nadu, India</p>
+                  <p>200 feet radial road,</p>
+                  <p>Opp to Embassy, Pallavaram,</p>
+                  <p>Chennai - 600044, Tamil Nadu, India</p>
                 </div>
               </div>
 
@@ -107,8 +107,7 @@ export default function Footer() {
                 <Phone size={18} className="text-gray-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-gray-400">
                   <p className="font-medium text-white mb-0.5 text-nunito">Phone</p>
-                  <p>+91 44 1234 4210</p>
-                  <p>+91 98765 5678</p>
+                  <p>7708555635</p>
                 </div>
               </div>
 
@@ -125,9 +124,9 @@ export default function Footer() {
                 <Clock size={18} className="text-gray-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-gray-400">
                   <p className="font-medium text-white mb-0.5 text-nunito">Hours</p>
-                  <p>Mon - Sat: 8:00 AM - 8:00 PM</p>
-                  <p>Sunday: 9:00 AM - 6:00 PM</p>
-                  <p>Emergency: 24/7</p>
+                  <p>Mon - Sat: 9:00 AM - 1:00 PM, 5:00 PM - 9:00 PM</p>
+                  <p>Sunday: Emergencies Only</p>
+                  <p>Emergency: 24/7 Round the Clock</p>
                 </div>
               </div>
             </div>
