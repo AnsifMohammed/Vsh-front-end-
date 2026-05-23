@@ -1,0 +1,151 @@
+import React from 'react';
+import { Facebook, Instagram, Youtube, Linkedin, MapPin, Phone, Mail, Clock } from 'lucide-react';
+import logo from '../assets/vsh-logo.svg';
+
+export default function Footer() {
+  const quickLinks = [
+    'About Us',
+    'Tools',
+    'Doctors',
+    'Success Stories',
+    'Blog',
+    'Contact',
+    'Appointment',
+  ];
+
+  const services = [
+    'IVF & Fertility Treatment',
+    'Gynecology',
+    'Laparoscopy',
+    'Obstetrics',
+    'oncology',
+    'Parental Care',
+    'ultrasonsography'
+  ];
+
+  return (
+    <footer className="bg-[#1a1a1a] text-white">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          {/* Brand Section */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center">
+                {logo && (
+                                    <div className="flex items-center justify-center">
+                                        <img src={logo} alt="Logo" className="" />
+                                    </div>
+                                )}
+              </div>
+              
+            </div>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Chennai's most trusted fertility and maternity center, bringing together excellence in healthcare with compassionate, world-class medical care.
+            </p>
+            <div>
+              <p className="text-sm mb-3">Follow Us</p>
+              <div className="flex gap-3">
+                <a href="#" className="w-9 h-9 rounded-full bg-[#6B3FA0] hover:bg-[#7A48B7] transition-colors flex items-center justify-center">
+                  <Facebook size={18} />
+                </a>
+                <a href="#" className="w-9 h-9 rounded-full bg-[#6B3FA0] hover:bg-[#7A48B7] transition-colors flex items-center justify-center">
+                  <Instagram size={18} />
+                </a>
+                <a href="#" className="w-9 h-9 rounded-full bg-[#6B3FA0] hover:bg-[#7A48B7] transition-colors flex items-center justify-center">
+                  <Youtube size={18} />
+                </a>
+                <a href="#" className="w-9 h-9 rounded-full bg-[#6B3FA0] hover:bg-[#7A48B7] transition-colors flex items-center justify-center">
+                  <Linkedin size={18} />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-base font-semibold mb-4 text-nunito">Quick Links</h4>
+            <ul className="space-y-2.5">
+              {quickLinks.map((link, index) => (
+                <li key={index}>
+                  <a href="#" className="text-gray-400 text-inter hover:text-white transition-colors text-sm">
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Our Services */}
+          <div>
+            <h4 className="text-base font-semibold mb-4 text-nunito">Our Services</h4>
+            <ul className="space-y-2.5">
+              {services.map((service, index) => (
+                <li key={index}>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">
+                    {service}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Information */}
+          <div>
+            <h4 className="text-base font-semibold mb-4 text-nunito">Contact Information</h4>
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <MapPin size={18} className="text-gray-400 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-gray-400">
+                  <p className="font-medium text-white mb-0.5 text-nunito">Address</p>
+                  <p>123 Medical Center Road,</p>
+                  <p>T. Nagar, Chennai - 600017</p>
+                  <p>Tamil Nadu, India</p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Phone size={18} className="text-gray-400 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-gray-400">
+                  <p className="font-medium text-white mb-0.5 text-nunito">Phone</p>
+                  <p>+91 44 1234 4210</p>
+                  <p>+91 98765 5678</p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Mail size={18} className="text-gray-400 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-gray-400">
+                  <p className="font-medium text-white mb-0.5 text-nunito">Email</p>
+                  <p>info@vayushrihospital.com</p>
+                  <p>appointments@vayushri.com</p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Clock size={18} className="text-gray-400 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-gray-400">
+                  <p className="font-medium text-white mb-0.5 text-nunito">Hours</p>
+                  <p>Mon - Sat: 8:00 AM - 8:00 PM</p>
+                  <p>Sunday: 9:00 AM - 6:00 PM</p>
+                  <p>Emergency: 24/7</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-gray-400">
+            <p>© 2024 Vayushri Hospital. All rights reserved. | <a href="#" className="hover:text-white">Privacy Policy</a> | <a href="#" className="hover:text-white">Terms of Service</a></p>
+            <p className="flex items-center gap-1">
+              Made with <span className="text-red-500">❤️</span> for families in Chennai
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}

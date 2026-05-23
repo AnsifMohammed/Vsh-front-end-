@@ -1,0 +1,277 @@
+@import "tailwindcss";
+
+@theme {
+  /* ===== FONTS ===== */
+  --font-inter: Inter, sans-serif;
+  --font-nunito: "Nunito Sans", sans-serif;
+
+  /* ===== COLORS ===== */
+  /* Primary Colors */
+  --color-primary: #6B3FA0;
+  --color-gold: #C8A046;
+  --color-accent: #7A48B7;
+
+  /* Neutral Colors */
+  --color-grayish: #5B6371;
+  --color-subtle: #697886;
+  --color-lightgray: #F2F2F2CC;
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+
+  /* Background Colors */
+  --color-bg-primary: #6B3FA0;
+  --color-bg-secondary: #E8F1FD;
+  --color-bg-accent: #7A48B7;
+
+  /* ===== TYPOGRAPHY - HEADINGS ===== */
+  /* H1 - Hero Title */
+  --font-size-h1-desktop: 48px;
+  --font-size-h1-tablet: 40px;
+  --font-size-h1-mobile: 32px;
+
+  /* H2 - Section Title */
+  --font-size-h2-desktop: 36px;
+  --font-size-h2-tablet: 32px;
+  --font-size-h2-mobile: 28px;
+
+  /* H3 - Subheading */
+  --font-size-h3-desktop: 28px;
+  --font-size-h3-tablet: 24px;
+  --font-size-h3-mobile: 22px;
+
+  /* H4 - Minor Heading */
+  --font-size-h4-desktop: 22px;
+  --font-size-h4-tablet: 20px;
+  --font-size-h4-mobile: 18px;
+
+  /* H5 - Accent Title */
+  --font-size-h5-desktop: 18px;
+  --font-size-h5-tablet: 18px;
+  --font-size-h5-mobile: 16px;
+
+  /* H6 - Small Heading */
+  --font-size-h6-desktop: 16px;
+  --font-size-h6-tablet: 16px;
+  --font-size-h6-mobile: 14px;
+
+  /* ===== TYPOGRAPHY - BODY TEXT ===== */
+  /* Body Large */
+  --font-size-body-large-desktop: 18px;
+  --font-size-body-large-tablet: 18px;
+  --font-size-body-large-mobile: 16px;
+
+  /* Body Default */
+  --font-size-body-default-desktop: 16px;
+  --font-size-body-default-tablet: 16px;
+  --font-size-body-default-mobile: 14px;
+
+  /* Body Small */
+  --font-size-body-small-desktop: 14px;
+  --font-size-body-small-tablet: 14px;
+  --font-size-body-small-mobile: 14px;
+
+  /* ===== TYPOGRAPHY - UI TEXT ===== */
+  /* Button/CTA */
+  --font-size-button: 16px;
+
+  /* Form Label */
+  --font-size-form-label: 14px;
+
+  /* Badge/Pill */
+  --font-size-badge: 12px;
+  --font-size-badge-alt: 13px;
+}
+
+/* ===== UTILITY CLASSES ===== */
+@layer utilities {
+
+  /* Heading Styles */
+  .text-h1 {
+    font-family: var(--font-nunito);
+    font-size: var(--font-size-h1-mobile);
+    font-weight: bold;
+    line-height: 1.2;
+  }
+
+  .text-h2 {
+    font-family: var(--font-nunito);
+    font-size: var(--font-size-h2-mobile);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .text-h3 {
+    font-family: var(--font-nunito);
+    font-size: var(--font-size-h3-mobile);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .text-h4 {
+    font-family: var(--font-nunito);
+    font-size: var(--font-size-h4-mobile);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .text-h5 {
+    font-family: var(--font-nunito);
+    font-size: var(--font-size-h5-mobile);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .text-h6 {
+    font-family: var(--font-nunito);
+    font-size: var(--font-size-h6-mobile);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  /* Body Text Styles */
+  .text-body-large {
+    font-family: var(--font-inter);
+    font-size: var(--font-size-body-large-mobile);
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .text-body {
+    font-family: var(--font-inter);
+    font-size: var(--font-size-body-default-mobile);
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .text-body-small {
+    font-family: var(--font-inter);
+    font-size: var(--font-size-body-small-mobile);
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  /* UI Text Styles */
+  .text-button {
+    font-family: var(--font-inter);
+    font-size: var(--font-size-button);
+    font-weight: 400;
+  }
+
+  .text-label {
+    font-family: var(--font-inter);
+    font-size: var(--font-size-form-label);
+    font-weight: 400;
+  }
+
+  .text-badge {
+    font-family: var(--font-inter);
+    font-size: var(--font-size-badge);
+    font-weight: 400;
+  }
+
+  /* Tablet breakpoint */
+  @media (min-width: 768px) {
+    .text-h1 {
+      font-size: var(--font-size-h1-tablet);
+    }
+
+    .text-h2 {
+      font-size: var(--font-size-h2-tablet);
+    }
+
+    .text-h3 {
+      font-size: var(--font-size-h3-tablet);
+    }
+
+    .text-h4 {
+      font-size: var(--font-size-h4-tablet);
+    }
+
+    .text-h5 {
+      font-size: var(--font-size-h5-tablet);
+    }
+
+    .text-h6 {
+      font-size: var(--font-size-h6-tablet);
+    }
+
+    .text-body-large {
+      font-size: var(--font-size-body-large-tablet);
+    }
+
+    .text-body {
+      font-size: var(--font-size-body-default-tablet);
+    }
+
+    .text-body-small {
+      font-size: var(--font-size-body-small-tablet);
+    }
+  }
+
+  /* Desktop breakpoint */
+  @media (min-width: 1440px) {
+    .text-h1 {
+      font-size: var(--font-size-h1-desktop);
+    }
+
+    .text-h2 {
+      font-size: var(--font-size-h2-desktop);
+    }
+
+    .text-h3 {
+      font-size: var(--font-size-h3-desktop);
+    }
+
+    .text-h4 {
+      font-size: var(--font-size-h4-desktop);
+    }
+
+    .text-h5 {
+      font-size: var(--font-size-h5-desktop);
+    }
+
+    .text-h6 {
+      font-size: var(--font-size-h6-desktop);
+    }
+
+    .text-body-large {
+      font-size: var(--font-size-body-large-desktop);
+    }
+
+    .text-body {
+      font-size: var(--font-size-body-default-desktop);
+    }
+
+    .text-body-small {
+      font-size: var(--font-size-body-small-desktop);
+    }
+  }
+
+  .title {
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+  }
+
+  .sub-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+  }
+
+  .card-title {
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  .card-sub-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+  }
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
