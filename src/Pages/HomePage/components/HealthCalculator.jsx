@@ -1036,7 +1036,7 @@ const HealthCalculator = () => {
     {
       id: 'menstrual',
       title: 'Menstrual Cycle Tracker',
-      subtitle: 'Track and predict your next period',
+      subtitle: 'Your cycle, your health — tracked with care.',
       icon: <LucideCalendar className="w-6 h-6 text-pink-500" />,
       bgColor: 'bg-pink-50',
       fields: [
