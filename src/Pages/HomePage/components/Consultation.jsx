@@ -109,7 +109,7 @@ const Consultation = () => {
                     label="Phone Number"
                     name="phoneNumber"
                     type="tel"
-                    placeholder="+91-XXXX-XXXXX"
+                    placeholder="7708555635"
                     required
                     value={formData.phoneNumber}
                     onChange={handleChange}
@@ -120,7 +120,7 @@ const Consultation = () => {
                   label="Email Address"
                   name="email"
                   type="email"
-                  placeholder="your.email@example.com"
+                  placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleChange}
                 />
@@ -195,10 +195,10 @@ const Consultation = () => {
                     <div>
                       <p className="text-sm font-semibold text-gray-900">Email</p>
                       <a
-                        href="mailto:vsh@gmail.com"
+                        href="mailto:info@vayushrihospital.com"
                         className="text-sm text-purple-600 hover:underline"
                       >
-                        vsh@gmail.com
+                        info@vayushrihospital.com
                       </a>
                       <p className="text-xs text-gray-500">General Inquiries</p>
                     </div>
@@ -214,12 +214,12 @@ const Consultation = () => {
                     <div>
                       <p className="text-sm font-semibold text-gray-900">WhatsApp</p>
                       <a
-                        href="https://wa.me/911234567875"
+                        href="https://wa.me/7708555635"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm text-purple-600 hover:underline"
                       >
-                        +91 1234567875
+                        7708555635
                       </a>
                       <p className="text-xs text-gray-500">Quick Response</p>
                     </div>
