@@ -215,7 +215,7 @@ export default function DoctorCards() {
         <div className="text-center mt-12">
           <button
             onClick={() => setShowAll(!showAll)}
-            className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+            className="px-8 py-3 bg-[#6b3fa0] text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
           >
             {showAll ? 'View Less Doctors' : 'View More Doctors'}
           </button>
