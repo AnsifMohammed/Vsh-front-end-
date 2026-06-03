@@ -1,14 +1,18 @@
 import FormInput from '../../Components/Common/FormInput';
 import Button from '../../Components/Common/Button';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useToast } from '../../Components/Common/ToastProvider';
-import { Calendar, Phone, Mail, Clock, CheckCircle, MessageCircle } from 'lucide-react';
+import { Calendar, Phone, Mail, Clock, CheckCircle, MessageCircle, Save, Eye } from 'lucide-react';
 import api from "../../api/api";
 
 // Main Appointment Booking Component
 const AppointmentPage = () => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [savedAppointments, setSavedAppointments] = useState([]);
+  const [showSaved, setShowSaved] = useState(false);
+  
   const [formData, setFormData] = useState({
     fullName: '',
     age: '',
@@ -23,6 +27,36 @@ const AppointmentPage = () => {
 
   // Get today's date for min date validation
   const today = new Date().toISOString().split('T')[0];
+
+  // Check if user is logged in
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    setUser(storedUser);
+    
+    // Load saved appointments from localStorage
+    if (storedUser) {
+      const saved = localStorage.getItem(`appointments_${storedUser.id}`);
+      if (saved) {
+        try {
+          setSavedAppointments(JSON.parse(saved));
+        } catch {
+          console.error("Error loading saved appointments");
+        }
+      }
+    }
+  }, []);
+
+  // Auto-fill form if user is logged in
+  useEffect(() => {
+    if (user && user.name) {
+      setFormData(prev => ({
+        ...prev,
+        fullName: user.name || '',
+        emailAddress: user.email || '',
+        phoneNumber: user.phone || ''
+      }));
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -84,17 +118,37 @@ const AppointmentPage = () => {
     try {
       setLoading(true);
 
-      const response = await api.post("/appointments", formData);
+      // Add user ID if logged in
+      const appointmentData = {
+        ...formData,
+        userId: user?.id || null,
+        bookedAt: new Date().toISOString()
+      };
+
+      const response = await api.post("/appointments", appointmentData);
 
       if (response.data.success) {
         toast.success("Appointment booked successfully!");
 
+        // Save to localStorage if user is logged in
+        if (user) {
+          const newAppointment = {
+            ...appointmentData,
+            id: response.data.data._id,
+            status: 'confirmed',
+            createdAt: new Date().toISOString()
+          };
+          const updatedAppointments = [...savedAppointments, newAppointment];
+          setSavedAppointments(updatedAppointments);
+          localStorage.setItem(`appointments_${user.id}`, JSON.stringify(updatedAppointments));
+        }
+
         // Reset form
         setFormData({
-          fullName: '',
+          fullName: user?.name || '',
           age: '',
-          phoneNumber: '',
-          emailAddress: '',
+          phoneNumber: user?.phone || '',
+          emailAddress: user?.email || '',
           specialty: '',
           preferredDoctor: '',
           preferredDate: '',
@@ -112,6 +166,47 @@ const AppointmentPage = () => {
       );
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Save progress without booking
+  const handleSaveProgress = () => {
+    if (!user) {
+      toast.error("Please login to save progress");
+      return;
+    }
+    
+    const progressData = {
+      ...formData,
+      savedAt: new Date().toISOString()
+    };
+    
+    localStorage.setItem(`appointment_progress_${user.id}`, JSON.stringify(progressData));
+    toast.success("Progress saved!");
+  };
+
+  // Load saved progress
+  const handleLoadProgress = () => {
+    if (!user) {
+      toast.error("Please login to view saved progress");
+      return;
+    }
+    
+    const saved = localStorage.getItem(`appointment_progress_${user.id}`);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setFormData(prev => ({
+          ...prev,
+          ...parsed,
+          savedAt: undefined
+        }));
+        toast.success("Progress loaded!");
+      } catch {
+        toast.error("Failed to load progress");
+      }
+    } else {
+      toast.info("No saved progress found");
     }
   };
 
@@ -339,8 +434,8 @@ New Appointment Request 🏥
                   />
                 </div>
 
-                {/* Buttons */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Action Buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                   <Button
                     onClick={handleSubmit}
                     variant="primary"
@@ -358,6 +453,74 @@ New Appointment Request 🏥
                     Book via WhatsApp
                   </Button>
                 </div>
+
+                {/* Save/Load Progress Buttons (only for logged in users) */}
+                {user && (
+                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                    <Button
+                      onClick={handleSaveProgress}
+                      variant="outline"
+                      fullWidth
+                      startIcon={<Save className="w-4 h-4" />}
+                      className="text-sm"
+                    >
+                      Save Progress
+                    </Button>
+                    <Button
+                      onClick={() => setShowSaved(!showSaved)}
+                      variant="outline"
+                      fullWidth
+                      startIcon={<Eye className="w-4 h-4" />}
+                      className="text-sm"
+                    >
+                      {showSaved ? "Hide Saved" : "View My Appointments"}
+                    </Button>
+                  </div>
+                )}
+
+                {/* Display Saved Appointments */}
+                {showSaved && user && savedAppointments.length > 0 && (
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-3">My Appointments</h3>
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {savedAppointments.map((apt, index) => (
+                        <div key={index} className="p-3 bg-white rounded border border-gray-200 text-sm">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <p className="font-medium text-gray-900">{apt.specialty}</p>
+                              <p className="text-gray-600">{apt.preferredDoctor || "Any doctor"}</p>
+                              <p className="text-gray-500 text-xs">
+                                {new Date(apt.preferredDate).toLocaleDateString()} at {apt.preferredTime}
+                              </p>
+                            </div>
+                            <span className={`text-xs px-2 py-1 rounded ${
+                              apt.status === 'confirmed' 
+                                ? 'bg-green-100 text-green-700' 
+                                : 'bg-yellow-100 text-yellow-700'
+                            }`}>
+                              {apt.status || 'Pending'}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {showSaved && user && savedAppointments.length === 0 && (
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200 text-center">
+                    <p className="text-sm text-gray-600">No saved appointments yet</p>
+                  </div>
+                )}
+
+                {/* Login prompt for guest users */}
+                {!user && (
+                  <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200 text-center">
+                    <p className="text-sm text-blue-700">
+                      <a href="/login" className="font-semibold underline">Login</a> to save your progress and view your appointments
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -371,8 +534,15 @@ New Appointment Request 🏥
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Call Us</p>
+                    <p className="text-sm font-medium text-gray-900">Mobile</p>
                     <p className="text-sm text-gray-600">7708555635</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Phone className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">Landline</p>
+                    <p className="text-sm text-gray-600">2261122</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">

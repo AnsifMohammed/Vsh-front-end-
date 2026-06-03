@@ -56,11 +56,7 @@ export default function AppRoutes() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/doctors" element={<DoctorPage />} />
-      <Route path="/appointment" element={
-        <PrivateRoute>
-          <AppointmentPage />
-        </PrivateRoute>
-      } />
+      <Route path="/appointment" element={<AppointmentPage />} />
       <Route path="/successstory" element={<StoryPage />} />
       <Route path="/Ivf&Fertility" element={<IVFPage />} />
       <Route path="/andrology" element={<DandrologyPage />} />
