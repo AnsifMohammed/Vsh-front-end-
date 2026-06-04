@@ -1,6 +1,6 @@
 import { Star, MessageCircle } from 'lucide-react';
 import Button from '../../../Components/Common/Button';
-import HomeHeroImg from '../../../assets/home-hero.png'
+import HomeHeroImg from '../../../assets/home-hero.webp'
 import { useNavigate } from "react-router-dom";
 
 

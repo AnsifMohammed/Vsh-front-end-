@@ -1,5 +1,5 @@
 import Button from '../../../Components/Common/Button';
-import supportbg from '../../../assets/supportbg.png';
+import supportbg from '../../../assets/supportbg.webp';
 import { Calculator, Calendar } from 'lucide-react';
 
 const WhatsAppIcon = () => (
