@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
-import BraedcrumbBg from '../../../assets/Breadcrumb-bg.png'
+import BraedcrumbBg from '../../../assets/Breadcrumb-bg.webp'
 
 // Reusable Breadcrumb Hero Component
 const BreadcrumbHero = ({ title, breadcrumbs = [] }) => {

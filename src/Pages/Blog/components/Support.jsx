@@ -1,5 +1,5 @@
 import Button from '../../../Components/Common/Button';
-import supportbg from '../../../assets/supportbg.png'
+import supportbg from '../../../assets/supportbg.webp';
 
 const WhatsAppIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
