@@ -1,4 +1,4 @@
-import bannerimg from '../../../assets/stascardimg.jpg'
+import bannerimg from '../../../assets/stascardimg.webp'
 export default function StatsBanner() {
   const stats = [
     { value: '25+', label: 'Expert Doctors' },

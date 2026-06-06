@@ -1,10 +1,10 @@
 
 import React from 'react';
 import { Calendar, GraduationCap } from 'lucide-react';
-import imgShanmugapriya from '../../../assets/Doctorimages/shanmugapriya.jpeg';
-import imgRobin from '../../../assets/Doctorimages/robin.jpeg';
-import imgAravind from '../../../assets/Doctorimages/aravind.jpeg';
-import imgSneha from '../../../assets/Doctorimages/sneha.jpeg';
+import imgShanmugapriya from '../../../assets/Doctorimages/shanmugapriya.webp';
+import imgRobin from '../../../assets/Doctorimages/robin.webp';
+import imgAravind from '../../../assets/Doctorimages/aravind.webp';
+import imgSneha from '../../../assets/Doctorimages/sneha.webp';
 import Button from '../../../Components/Common/Button';
 import Badge from '../../../Components/Common/Badge';
 import { useNavigate } from 'react-router-dom';

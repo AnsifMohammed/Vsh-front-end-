@@ -3,10 +3,10 @@ import Card from "../../../Components/Common/Card";
 import Button from '../../../Components/Common/Button';
 import { Award } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import imgShanmugapriya from '../../../assets/Doctorimages/shanmugapriya.jpeg';
-import imgRobin from '../../../assets/Doctorimages/robin.jpeg';
-import imgAravind from '../../../assets/Doctorimages/aravind.jpeg';
-import imgSneha from '../../../assets/Doctorimages/sneha.jpeg';
+import imgShanmugapriya from '../../../assets/Doctorimages/shanmugapriya.webp';
+import imgRobin from '../../../assets/Doctorimages/robin.webp';
+import imgAravind from '../../../assets/Doctorimages/aravind.webp';
+import imgSneha from '../../../assets/Doctorimages/sneha.webp';
 
 const DoctorCard = ({ doctor }) => {
 
