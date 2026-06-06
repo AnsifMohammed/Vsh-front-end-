@@ -1,10 +1,9 @@
 import Consultation from "./components/Consultation";
 import HealthCalculator from "./components/HealthCalculator";
 import HealthcareJourney from "./components/HealthcareJaourney";
-import HealthcareServices from "./components/HealthcareServices";
+import HealthcareTreatments from "./components/HealthcareServices";
 import HeroSection from "./components/HeroSection";
 import MapSection from "./components/MapSection";
-import PatientStories from "./components/PatientStories";
 import SpecialistDoctors from "./components/SpecialistDoctors";
 import StatsBanner from "./components/Stasbanner";
 import StatsCard from "./components/StatsCard";
@@ -19,10 +18,9 @@ function HomePage() {
       <StatsCard />
       <HealthCalculator />
       <HealthcareJourney selectedPath={selectedPath} onSelectPath={setSelectedPath} />
-      <HealthcareServices selectedFilter={selectedPath} />
+      <HealthcareTreatments selectedFilter={selectedPath} />
       <SpecialistDoctors />
       <StatsBanner />
-      <PatientStories />
       <Consultation />
       <MapSection />
     </div>

@@ -1,6 +1,6 @@
 import IVFPage from "./IVF&Fertility";
 
-function ServicePage() {
+function TreatmentPage() {
 
   return (
     <div className="min-h-screen pt-14">
@@ -9,4 +9,4 @@ function ServicePage() {
   );
 }
 
-export default ServicePage;
+export default TreatmentPage;

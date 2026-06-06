@@ -5,16 +5,15 @@ import HomePage from "../Pages/HomePage";
 import ContactPage from "../Pages/ContactPage";
 import AppointmentPage from "../Pages/AppointmentPage";
 import BlogPage from "../Pages/Blog";
-import StoryPage from "../Pages/StoryPage";
 import DoctorPage from "../Pages/DoctorsPage";
 import IVFPage from "../Pages/ServicePage/IVF&Fertility";
-import DandrologyPage from "../Pages/ServicePage/DandrologyService";
-import GynecologyPage from "../Pages/ServicePage/GynecologyService";
-import LaparoscopyPage from "../Pages/ServicePage/LaparoscopyService";
-import ObstetricPage from "../Pages/ServicePage/ObstetricsService";
-import OncologyPage from "../Pages/ServicePage/OncologyService";
-import ParentalCarePage from "../Pages/ServicePage/ParentalCareService";
-import UltraSonographyPage from "../Pages/ServicePage/UltrasonographyService";
+import DandrologyPage from "../Pages/ServicePage/Dandrology";
+import GynecologyPage from "../Pages/ServicePage/Gynecology";
+import LaparoscopyPage from "../Pages/ServicePage/Laparoscopy";
+import ObstetricPage from "../Pages/ServicePage/Obstetrics";
+import OncologyPage from "../Pages/ServicePage/Oncology";
+import ParentalCarePage from "../Pages/ServicePage/ParentalCare";
+import UltraSonographyPage from "../Pages/ServicePage/Ultrasonography";
 import Login from "../Pages/Auth/Login";
 import Signup from "../Pages/Auth/Signup";
 import ForgotPassword from "../Pages/Auth/Forgotpassword";
@@ -57,7 +56,6 @@ export default function AppRoutes() {
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/doctors" element={<DoctorPage />} />
       <Route path="/appointment" element={<AppointmentPage />} />
-      <Route path="/successstory" element={<StoryPage />} />
       <Route path="/Ivf&Fertility" element={<IVFPage />} />
       <Route path="/andrology" element={<DandrologyPage />} />
       <Route path="/gynecology" element={<GynecologyPage />} />

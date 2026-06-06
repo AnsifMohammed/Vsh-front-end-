@@ -8,7 +8,7 @@ const WhatsAppIcon = () => (
 );
 const Support = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className=" flex items-center justify-center p-4">
       <div className="w-full max-w-6xl  sm:px-6 sm:py-12 md:px-8 md:py-16 " >
         <div className="relative rounded-3xl " style={{
     backgroundImage: `url(${supportbg})`,

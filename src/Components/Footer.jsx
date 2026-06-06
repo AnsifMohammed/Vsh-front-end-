@@ -13,14 +13,14 @@ export default function Footer() {
     'Appointment',
   ];
 
-  const services = [
-    'IVF & Fertility Treatment',
+  const treatments = [
+    'IVF & Fertility',
     'Gynecology',
     'Laparoscopy',
     'Obstetrics',
-    'oncology',
+    'Oncology',
     'Parental Care',
-    'ultrasonsography'
+    'Ultrasonography'
   ];
 
   return (
@@ -75,14 +75,14 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Our Services */}
+          {/* Our Treatments */}
           <div>
-            <h4 className="text-base font-semibold mb-4 text-nunito">Our Services</h4>
+            <h4 className="text-base font-semibold mb-4 text-nunito">Our Treatments</h4>
             <ul className="space-y-2.5">
-              {services.map((service, index) => (
+              {treatments.map((treatment, index) => (
                 <li key={index}>
                   <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">
-                    {service}
+                    {treatment}
                   </a>
                 </li>
               ))}

@@ -7,19 +7,19 @@ import TreatmentCard from "../components/TreatmentCard";
 import { Award, Heart } from 'lucide-react';
 import Treatments from "../components/Treatments";
 
-function GynecologyPage() {
+function UltraSonographyPage() {
   const faqData = [
     {
-      question: "What symptoms should I discuss with a gynecologist?",
-      answer: "You should discuss irregular periods, severe menstrual pain, unusual discharge, pelvic pain, or any changes in your breast health."
+      question: "Are ultrasounds safe during pregnancy?",
+      answer: "Yes, ultrasounds use sound waves, not radiation, and have been used safely in obstetrics for decades to monitor fetal development."
     },
     {
-      question: "At what age should a girl first visit a gynecologist?",
-      answer: "The first visit is generally recommended between the ages of 13 and 15, primarily for education and to establish a relationship with a healthcare provider."
+      question: "Do I need any preparation for my scan?",
+      answer: "For certain scans, like early pregnancy or pelvic ultrasounds, a full bladder may be required. Our team will provide specific instructions when you book."
     },
     {
-      question: "How often should I have a Pap smear?",
-      answer: "Most women should start having Pap smears at age 21. The frequency depends on your age and medical history, typically every 3 to 5 years."
+      question: "What is the difference between 3D and 4D scans?",
+      answer: "A 3D scan shows still images of the baby in three dimensions, while a 4D scan adds the element of motion, allowing you to see the baby move in real-time."
     }
   ];
   const storiesData = [
@@ -86,63 +86,63 @@ function GynecologyPage() {
 
   const treatmentsData = [
     {
-      icon: '🌸',
-      title: 'PCOS & Hormonal Management',
-      description: 'Comprehensive care for polycystic ovary syndrome and hormonal imbalances.',
-      successRate: 'Highly Effective',
-      duration: 'Ongoing management',
-      processTitle: 'Care Approach:',
+      icon: '📡',
+      title: 'Advanced Obstetric Scans',
+      description: 'High-resolution imaging to monitor fetal health at every stage.',
+      successRate: 'Precision Imaging',
+      duration: '20-40 mins',
+      processTitle: 'Available Scans:',
       steps: [
-        'Hormonal profiling',
-        'Nutritional guidance',
-        'Metabolic assessment',
-        'Personalized medication plan'
+        'Early pregnancy viability',
+        'NT/NB screening',
+        'Anomaly scanning',
+        'Growth & Doppler studies'
       ],
-      primaryButtonText: 'Book Consultation',
+      primaryButtonText: 'Book Scan',
       secondaryButtonText: 'Learn More'
     },
     {
-      icon: '🏥',
-      title: 'Menstrual Disorder Clinic',
-      description: 'Expert treatment for painful, heavy, or irregular periods.',
-      successRate: '95% Improvement',
-      duration: 'Varies',
-      processTitle: 'Diagnostic Steps:',
+      icon: '🖥️',
+      title: '3D/4D Fetal Visualization',
+      description: 'Experience a detailed first look at your baby in motion.',
+      successRate: 'Lifelike Detail',
+      duration: '30 mins',
+      processTitle: 'Experience:',
       steps: [
-        'Pelvic ultrasound',
-        'Hormone testing',
-        'Hysteroscopy if needed',
-        'Tailored treatment options'
+        'Crystal clear 3D images',
+        'Real-time 4D video',
+        'Digital copies available',
+        'Family viewing environment'
       ],
-      primaryButtonText: 'Book Appointment',
-      secondaryButtonText: 'Contact Us'
+      primaryButtonText: 'Schedule Visit',
+      secondaryButtonText: 'Ask Question'
     }
   ];
 
   return (
     <div className="h-auto pt-14">
       <Breadcrumb
-        title="Gynecology Service"
+        title="Ultrasonography"
         breadcrumbs={[
           { label: 'Home', link: '/' },
-          { label: 'Gynecology', link: '/gynecology' }
+          { label: 'Ultrasonography', link: '/ultrasonography' }
         ]}
       />
       <TreatmentCard
-        title="Compassionate Women's Care"
-        subtitle="Expert gynecological care for every stage of life."
-        description="From adolescent health to menopause, Vayushri Hospital provides a supportive environment for women to receive expert medical advice and treatment. Our specialists focus on preventive care and effective solutions for complex gynecological issues."
+        title="Advanced Diagnostic Imaging"
+        subtitle="Clear insights for your health journey."
+        description="Vayushri Hospital features state-of-the-art ultrasonography equipment and experienced radiologists. Our imaging treatments provide the precision needed for accurate diagnosis and monitoring, ensuring you receive the best care based on clear data."
         features={[
-          { icon: "check", label: "PCOS Excellence Center", color: "text-pink-500" },
-          { icon: "trending", label: "Menstrual Disorders Clinic", color: "text-blue-500" },
-          { icon: "award", label: "Board-Certified Gynecologists", color: "text-purple-500" }
+          { icon: "check", label: "High-Definition 3D/4D Scans", color: "text-blue-500" },
+          { icon: "trending", label: "Non-Invasive Diagnostics", color: "text-green-500" },
+          { icon: "award", label: "Specialized Radiologists", color: "text-purple-500" }
         ]}
         highlights={[
-          { icon: "Baby", title: "Wellness", subtitle: "Total Health Focus", color: "text-blue-600" },
-          { icon: "Award", title: "Technology", subtitle: "Latest Diagnostics", color: "text-green-500" },
-          { icon: "Users", title: "Compassion", subtitle: "Empathetic Care", color: "text-purple-500" }
+          { icon: "Baby", title: "Clarity", subtitle: "Advanced Resolution", color: "text-blue-600" },
+          { icon: "Award", title: "Certied", subtitle: "NABL Standards", color: "text-green-500" },
+          { icon: "Users", title: "Quick", subtitle: "Instant Reports", color: "text-purple-500" }
         ]}
-        image="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80"
+        image="https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80"
       />
       <Treatments
         title="Available Treatments"
@@ -188,4 +188,4 @@ function GynecologyPage() {
   );
 }
 
-export default GynecologyPage;
+export default UltraSonographyPage;

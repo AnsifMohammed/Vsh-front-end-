@@ -1,10 +1,9 @@
 import Breadcrumb from ".././components/Breadcrumb";
 import DoctorsCard from "../components/DoctorsCard";
 import FAQ from "../components/Faq";
-import PatientStories from "../components/Patientstories";
 import Support from "../components/Support";
 import TreatmentCard from "../components/TreatmentCard";
-import { Award, Heart } from 'lucide-react';
+import { Award } from 'lucide-react';
 import Treatments from "../components/Treatments";
 import { useNavigate } from "react-router-dom";
 
@@ -32,33 +31,6 @@ function IVFPage() {
       answer: "Generally, couples under 35 should try naturally for one year before seeking fertility treatment, while those over 35 should consult after six months. However, if you have known fertility issues or medical conditions affecting fertility, it's advisable to consult a specialist sooner."
     }
   ];
-  const storiesData = [
-    {
-      quote: '"Dr. Rajesh diagnosed my PCOS and created a perfect treatment plan. Within 8 months, my cycles were regular and I conceived naturally. Forever grateful!"',
-      name: 'Meera Gupta',
-      treatment: 'PCOS Treatment',
-      location: 'Delhi',
-      icon: '🌱',
-      rating: 5
-    },
-    {
-      quote: '"The comprehensive fertility assessment and guidance from the team helped us understand our options. The care and attention we received was exceptional."',
-      name: 'Rahul & Kavya',
-      treatment: 'Fertility Consultation',
-      location: 'Bangalore',
-      icon: '🧬',
-      rating: 5
-    },
-    {
-      quote: '"Dr. Anita managed my high-risk pregnancy beautifully. Regular monitoring and her expertise ensured a safe delivery of my healthy baby boy."',
-      name: 'Anjali Reddy',
-      treatment: 'High-Risk Pregnancy',
-      location: 'Hyderabad',
-      icon: '🤰',
-      rating: 5
-    }
-  ];
-
   const doctorsData = [
     {
       id: 1,
@@ -204,14 +176,6 @@ function IVFPage() {
         highlightText="Treatments"
         subtitle="Explore our comprehensive range of treatments designed for your specific needs"
         treatments={treatmentsData}
-      />
-      <PatientStories
-        badgeText="Patient Stories"
-        badgeIcon={<Heart className="w-4 h-4" />}
-        heading="Stories of Hope & Success"
-        highlightText="Hope & Success"
-        description="Real experiences from real families who found their path to parenthood with our care and support"
-        stories={storiesData}
       />
       <DoctorsCard
         badgeText="Expert Team"

@@ -1,10 +1,9 @@
 import Breadcrumb from ".././components/Breadcrumb";
 import DoctorsCard from "../components/DoctorsCard";
 import FAQ from "../components/Faq";
-import PatientStories from "../components/Patientstories";
 import Support from "../components/Support";
 import TreatmentCard from "../components/TreatmentCard";
-import { Award, Heart } from "lucide-react";
+import { Award } from "lucide-react";
 import Treatments from "../components/Treatments";
 
 function OncologyPage() {
@@ -25,38 +24,6 @@ function OncologyPage() {
         "Treatment options vary depending on the type and stage of cancer and may include surgery, chemotherapy, radiation therapy, or a combination of these.",
     },
   ];
-  const storiesData = [
-    {
-      id: 2,
-      name: "Dr. Robin",
-      specialization: "Anaesthetist",
-      credentials: "MBBS, MD - Madras Engineering College",
-      experience: "24+ Years",
-      description:
-        "ICU Specialist and Intensivist with expertise in critical care, anaesthesia, and pain management.",
-      image:
-        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&h=300&fit=crop",
-    },
-    {
-      quote:
-        '"The comprehensive fertility assessment and guidance from the team helped us understand our options. The care and attention we received was exceptional."',
-      name: "Rahul & Kavya",
-      treatment: "Fertility Consultation",
-      location: "Bangalore",
-      icon: "🧬",
-      rating: 5,
-    },
-    {
-      quote:
-        '"Dr. Anita managed my high-risk pregnancy beautifully. Regular monitoring and her expertise ensured a safe delivery of my healthy baby boy."',
-      name: "Anjali Reddy",
-      treatment: "High-Risk Pregnancy",
-      location: "Hyderabad",
-      icon: "🤰",
-      rating: 5,
-    },
-  ];
-
   const doctorsData = [
     {
       id: 1,
@@ -127,7 +94,7 @@ function OncologyPage() {
       steps: [
         "Tumor board review",
         "Personalized treatment plan",
-        "Supportive care services",
+        "Supportive care treatments",
         "Regular follow-up monitoring",
       ],
       primaryButtonText: "Request Consultation",
@@ -138,7 +105,7 @@ function OncologyPage() {
   return (
     <div className="h-auto pt-14">
       <Breadcrumb
-        title="Oncology Service"
+        title="Oncology"
         breadcrumbs={[
           { label: "Home", link: "/" },
           { label: "Oncology", link: "/oncology" },
@@ -192,14 +159,6 @@ function OncologyPage() {
         highlightText="Treatments"
         subtitle="Explore our comprehensive range of treatments designed for your specific needs"
         treatments={treatmentsData}
-      />
-      <PatientStories
-        badgeText="Patient Stories"
-        badgeIcon={<Heart className="w-4 h-4" />}
-        heading="Stories of Hope & Success"
-        highlightText="Hope & Success"
-        description="Real experiences from real families who found their path to parenthood with our care and support"
-        stories={storiesData}
       />
       <DoctorsCard
         badgeText="Expert Team"
