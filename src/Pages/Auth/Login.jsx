@@ -72,12 +72,12 @@ const Login = () => {
           
           {/* Content overlay */}
           <div className="relative z-10">
-            <h1 className="text-5xl font-bold text-white mb-4 leading-tight font-['Playfair_Display']">
-              Trusted <span className="text-purple-300">Fertility</span> &<br />
+            <h1 className="text-6xl font-extrabold text-white mb-4 leading-tight font-['Playfair_Display'] drop-shadow-lg">
+              Trusted <span className="text-purple-100">Fertility</span> &<br />
               Women's Health<br />
               Care
             </h1>
-            <p className="text-gray-200 text-lg font-['Lato']">
+            <p className="text-white text-xl font-['Lato'] drop-shadow-md">
               Compassionate care with advanced medical technology since 2019.
             </p>
           </div>
@@ -90,9 +90,9 @@ const Login = () => {
               <svg className="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
-              <h3 className="text-2xl font-bold text-gray-800 font-['Playfair_Display']">Vayushri Hospital</h3>
+              <h3 className="text-2xl font-bold text-white font-['Playfair_Display'] drop-shadow-md">Vayushri Hospital</h3>
             </div>
-            <p className="text-gray-500 text-sm mb-8 font-['Lato']">Trusted Healthcare Since 2019</p>
+            <p className="text-white/90 text-sm mb-8 font-['Lato'] drop-shadow-sm">Trusted Healthcare Since 2019</p>
             <h2 className="text-4xl font-bold text-gray-900 mb-2 font-['Playfair_Display']">Welcome back</h2>
             <p className="text-gray-600 font-['Lato']">Sign in to access your patient portal</p>
           </div>

@@ -39,7 +39,7 @@ function App() {
   ];
 
   const handleContactClick = () => {
-    navigate("/contact");
+    navigate("/appointment");
   };
 
   return (
@@ -49,7 +49,7 @@ function App() {
         <Navbar
           logoText="Vayushri Hospital"
           navLinks={navLinks}
-          ctaText="Contact Us"
+ctaText="Book Visit"
           onCtaClick={handleContactClick}
           logo={logo}
           bgColor="white"
@@ -58,8 +58,8 @@ function App() {
           linkpadding="14px"
           linkradius="10px"
           linkblur="blur(34px)"
-          linkHoverColor="#5B6371"
-          linkcolor="#5B6371"
+          linkHoverColor="#E0E0E0"
+          linkcolor="#333333"
         />
       )}
       <AppRoutes />

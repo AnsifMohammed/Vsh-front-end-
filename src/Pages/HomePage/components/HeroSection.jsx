@@ -1,27 +1,21 @@
-import { Star, MessageCircle } from 'lucide-react';
-import Button from '../../../Components/Common/Button';
-import HomeHeroImg from '../../../assets/home-hero.webp'
+import { MessageCircle } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
+import HomeHeroImg from "../../../assets/home-hero.webp";
 
 
 const HeroSection = () => {
     const navigate = useNavigate();
-    const reviewerImages = [
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
-    ];
 
     return (
         <div className="relative min-h-screen w-full overflow-hidden">
             {/* Background Image with Overlay */}
-            <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{
-                    backgroundImage: `url(${HomeHeroImg})`,
-                }}
-            >
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/60 to-black/40"></div>
+                <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{
+                        backgroundImage: `url(${HomeHeroImg})`,
+                    }}
+                >
+                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/30 to-black/10"></div>
             </div>
 
             {/* Content Container */}
@@ -40,49 +34,33 @@ const HeroSection = () => {
                             Experience comprehensive fertility treatments and women's healthcare with our team of specialists. We combine advanced medical technology with compassionate care to help you achieve your dreams of parenthood.
                         </p>
 
-                        {/* CTA Button */}
-                        <div className="mb-8 sm:mb-12">
-                            <Button
-                                variant="primary"
-                                size="lg"
-                                className='font-nunito-sans font-bold text-[18px] leading-[120%] tracking-normal'
+                        {/* CTA Buttons */}
+                        <div className="mb-8 sm:mb-12 flex flex-wrap items-center gap-4">
+                            {/* Book an Appointment - Primary purple gradient */}
+                            <button
                                 onClick={() => navigate("/appointment")}
+                                className="font-nunito-sans font-bold text-base sm:text-[18px] leading-[120%] tracking-normal text-white px-7 sm:px-9 py-3.5 sm:py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                                style={{
+                                    background:
+                                        'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%)',
+                                    boxShadow: '0 10px 30px -8px rgba(124, 58, 237, 0.7)',
+                                }}
                             >
                                 Book an Appointment
-                            </Button>
-                        </div>
+                            </button>
 
-                        {/* Reviews Section */}
-                        <div className="flex items-center gap-4 flex-wrap">
-                            {/* Reviewer Avatars */}
-                            <div className="flex -space-x-3">
-                                {reviewerImages.map((img, index) => (
-                                    <div
-                                        key={index}
-                                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white overflow-hidden shadow-md"
-                                    >
-                                        <img
-                                            src={img}
-                                            alt={`Reviewer ${index + 1}`}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Rating */}
-                            <div className="flex flex-col">
-                                <div className="flex items-center gap-1">
-                                    {[...Array(5)].map((_, i) => (
-                                        <Star
-                                            key={i}
-                                            className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400 text-yellow-400"
-                                        />
-                                    ))}
-                                    <span className="ml-2 text-white font-bold text-sm sm:text-base">4.9</span>
-                                </div>
-                                <p className="text-gray-300 text-xs sm:text-sm mt-1">from 1,200 reviews</p>
-                            </div>
+                            {/* Explore Treatments - Glass style */}
+                            <button
+                                onClick={() => navigate("/gynecology")}
+                                className="font-nunito-sans font-bold text-base sm:text-[18px] leading-[120%] tracking-normal text-white px-7 sm:px-9 py-3.5 sm:py-4 rounded-full transition-all duration-300 hover:scale-105 hover:bg-white/20 border border-white/30"
+                                style={{
+                                    background: 'rgba(255, 255, 255, 0.10)',
+                                    backdropFilter: 'blur(20px)',
+                                    WebkitBackdropFilter: 'blur(20px)',
+                                }}
+                            >
+                                Explore Treatments
+                            </button>
                         </div>
                     </div>
                 </div>

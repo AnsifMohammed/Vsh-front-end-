@@ -154,7 +154,12 @@ const CalculatorCard = ({
 };
 
 const MenstrualCalendar = ({ predictions }) => {
-  const [currentMonth, setCurrentMonth] = useState(new Date(2025, 8)); // September 2025
+  const defaultMonth = predictions?.nextPeriodDate
+    ? new Date(predictions.nextPeriodDate)
+    : new Date();
+  const [currentMonth, setCurrentMonth] = useState(
+    new Date(defaultMonth.getFullYear(), defaultMonth.getMonth()),
+  );
   const [showFullCalendar, setShowFullCalendar] = useState(true);
 
   const monthNames = [
@@ -191,21 +196,50 @@ const MenstrualCalendar = ({ predictions }) => {
     return days;
   };
 
-  const getDayType = (day) => {
-    if (!day) return null;
+  const isSameDay = (day, dateObj) => {
+    if (!dateObj) return false;
+    const d = new Date(dateObj);
+    return (
+      d.getFullYear() === currentMonth.getFullYear() &&
+      d.getMonth() === currentMonth.getMonth() &&
+      d.getDate() === day
+    );
+  };
 
-    // Period days (example: 1-5, 26-30)
-    if ((day >= 1 && day <= 5) || (day >= 26 && day <= 30)) {
-      return "period";
+  const getDayType = (day) => {
+    if (!day || !predictions) return null;
+
+    // Check if this day matches any prediction date
+    if (predictions.nextPeriodDate) {
+      // Show period starting from nextPeriodDate, spanning cycleLength days
+      const periodStart = new Date(predictions.nextPeriodDate);
+      const periodEnd = new Date(periodStart);
+      periodEnd.setDate(periodStart.getDate() + (predictions.cycleLength ? predictions.cycleLength - 1 : 4));
+
+      const d = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+      if (d >= periodStart && d <= periodEnd) {
+        return "period";
+      }
     }
-    // Ovulation day (example: 12)
-    if (day === 12) {
+
+    if (isSameDay(day, predictions.ovulationDate)) {
       return "ovulation";
     }
-    // Fertile window (example: 10-16)
-    if (day >= 10 && day <= 16) {
-      return "fertile";
+
+    if (predictions.fertileWindowStart && predictions.fertileWindowEnd) {
+      const fertileStart = new Date(predictions.fertileWindowStart);
+      const fertileEnd = new Date(predictions.fertileWindowEnd);
+      const d = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+      if (d >= fertileStart && d <= fertileEnd) {
+        return "fertile";
+      }
     }
+
+    // Also check lastPeriodDate if it falls in the current month for period marking
+    if (isSameDay(day, predictions.lastPeriodDate)) {
+      return "period";
+    }
+
     return null;
   };
 

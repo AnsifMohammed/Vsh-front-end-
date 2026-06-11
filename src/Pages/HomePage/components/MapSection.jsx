@@ -18,7 +18,7 @@ export default function MapSection() {
     window.open(url, "_blank");
   };
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8 sm:px-6 sm:py-12 md:px-8 md:py-16 lg:p-20">
+    <div className="w-full max-w-6xl mx-auto px-4 py-8 sm:px-6 sm:py-12 md:px-8 md:py-16 lg:p-10">
       <div className="relative rounded-md overflow-hidden shadow-lg h-96 sm:h-80 md:h-72 lg:h-64">
         {/* Google Maps Embed */}
         <iframe

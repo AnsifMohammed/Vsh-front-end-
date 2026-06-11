@@ -17,14 +17,14 @@ const Button = ({
 }) => {
   // Variant styles
   const variants = {
-    primary: 'bg-primary hover:bg-blue-700 text-white',
+    primary: 'bg-primary hover:bg-purple-800 text-white',
     secondary: 'bg-gray-600 hover:bg-gray-700 text-white',
     success: 'bg-green-600 hover:bg-green-700 text-white',
     danger: 'bg-red-600 hover:bg-red-700 text-white',
     warning: 'bg-yellow-500 hover:bg-yellow-600 text-white',
-    outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50',
-    ghost: 'text-blue-600 hover:bg-blue-50',
-    link: 'text-blue-600 hover:underline'
+    outline: 'border-2 border-purple-600 text-purple-600 hover:bg-purple-50',
+    ghost: 'text-purple-600 hover:bg-purple-50',
+    link: 'text-purple-600 hover:underline'
   };
 
   // Size styles
@@ -37,7 +37,7 @@ const Button = ({
   };
 
   // Base styles
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500';
+  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500';
 
   // Disabled styles
   const disabledStyles = 'opacity-50 cursor-not-allowed';
