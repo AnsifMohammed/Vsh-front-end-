@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import BlogManagement from "./components/BlogManagement";
+import DoctorManagement from "./components/DoctorManagement";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -22,6 +23,12 @@ const AdminDashboard = () => {
     }
     fetchDashboardData();
   }, [navigate]);
+
+  useEffect(() => {
+    if (activeTab === "appointments") {
+      fetchAppointments();
+    }
+  }, [activeTab, statusFilter]);
 
   const fetchDashboardData = async () => {
     try {
@@ -104,11 +111,14 @@ const AdminDashboard = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    const day = date.getUTCDate();
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = months[date.getUTCMonth()];
+    const year = date.getUTCFullYear();
+    return `${day} ${month} ${year}`;
   };
 
   const getStatusColor = (status) => {
@@ -181,10 +191,7 @@ const AdminDashboard = () => {
               Overview
             </button>
             <button
-              onClick={() => {
-                setActiveTab("appointments");
-                fetchAppointments();
-              }}
+              onClick={() => setActiveTab("appointments")}
               className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === "appointments"
                   ? "border-teal-500 text-teal-600"
@@ -202,6 +209,16 @@ const AdminDashboard = () => {
               }`}
             >
               Manage Blogs
+            </button>
+            <button
+              onClick={() => setActiveTab("doctors")}
+              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "doctors"
+                  ? "border-teal-500 text-teal-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Manage Doctors
             </button>
           </div>
         </div>
@@ -339,10 +356,7 @@ const AdminDashboard = () => {
                   Recent Appointments
                 </h2>
                 <button
-                  onClick={() => {
-                    setActiveTab("appointments");
-                    fetchAppointments();
-                  }}
+                  onClick={() => setActiveTab("appointments")}
                   className="text-teal-600 hover:text-teal-700 font-medium text-sm"
                 >
                   View All →
@@ -420,10 +434,7 @@ const AdminDashboard = () => {
               </h2>
               <select
                 value={statusFilter}
-                onChange={(e) => {
-                  setStatusFilter(e.target.value);
-                  fetchAppointments();
-                }}
+                onChange={(e) => setStatusFilter(e.target.value)}
                 className="border border-gray-300 rounded-lg px-4 py-2 text-sm"
               >
                 <option value="all">All Status</option>
@@ -503,7 +514,7 @@ const AdminDashboard = () => {
                       </td>
                       <td className="py-3 px-4">
                         <div className="flex gap-2">
-                          {apt.status !== "confirmed" && (
+                          {apt.status !== "confirmed" && apt.status !== "completed" && (
                             <button
                               onClick={() =>
                                 updateAppointmentStatus(apt._id, "confirmed")
@@ -512,6 +523,17 @@ const AdminDashboard = () => {
                               className="text-xs bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
                             >
                               Confirm
+                            </button>
+                          )}
+                          {apt.status !== "completed" && (
+                            <button
+                              onClick={() =>
+                                updateAppointmentStatus(apt._id, "completed")
+                              }
+                              disabled={updating}
+                              className="text-xs bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                            >
+                              Complete
                             </button>
                           )}
                           {apt.status !== "cancelled" && (
@@ -543,6 +565,7 @@ const AdminDashboard = () => {
         )}
 
         {activeTab === "blogs" && <BlogManagement />}
+        {activeTab === "doctors" && <DoctorManagement />}
       </main>
     </div>
   );

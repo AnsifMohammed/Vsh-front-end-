@@ -1,8 +1,22 @@
 import { useState } from 'react';
 import { ChevronDown, CheckCircle, Calendar } from 'lucide-react';
 import Button from '../../../Components/Common/Button';
+import { useNavigate } from 'react-router-dom';
 
 const TreatmentCard = ({ treatment, isOpen, onToggle }) => {
+  const navigate = useNavigate();
+
+  const handleBookConsultation = () => {
+    if (treatment.onBookConsultation) {
+      treatment.onBookConsultation();
+    } else {
+      navigate('/appointment', {
+        state: {
+          specialty: treatment.title || ''
+        }
+      });
+    }
+  };
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-4 overflow-hidden">
       {/* Header - Always Visible */}
@@ -74,7 +88,7 @@ const TreatmentCard = ({ treatment, isOpen, onToggle }) => {
               size="md"
               fullWidth
               startIcon={<Calendar className="w-4 h-4" />}
-              onClick={treatment.onBookConsultation}
+              onClick={handleBookConsultation}
             >
               {treatment.primaryButtonText}
             </Button>
@@ -82,7 +96,7 @@ const TreatmentCard = ({ treatment, isOpen, onToggle }) => {
               variant="outline"
               size="md"
               fullWidth
-              onClick={treatment.onAskQuestion}
+              onClick={treatment.onAskQuestion || (() => navigate('/contact'))}
             >
               {treatment.secondaryButtonText}
             </Button>

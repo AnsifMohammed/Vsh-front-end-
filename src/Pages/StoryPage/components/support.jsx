@@ -1,5 +1,6 @@
 import Button from '../../../Components/Common/Button';
 import supportbg from '../../../assets/supportbg.webp';
+import { useNavigate } from 'react-router-dom';
 
 const WhatsAppIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -7,6 +8,8 @@ const WhatsAppIcon = () => (
   </svg>
 );
 const Support = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-6xl  sm:px-6 sm:py-12 md:px-8 md:py-16 " >
@@ -34,7 +37,7 @@ compassionate support
                 variant="primary"
                 size="lg"
                 className="bg-purple-600 hover:bg-purple-700"
-                 onClick={() => window.location.href = 'appointment'}
+                 onClick={() => navigate('/appointment')}
               >
                 Book Consultation
               </Button>

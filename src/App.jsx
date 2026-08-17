@@ -8,14 +8,15 @@ import ScrollToTop from "./Components/Common/ScrollToTop";
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const authPaths = [
+  const hideNavbarFooterPaths = [
     "/login",
     "/signup",
     "/forgotpassword",
     "/resetpassword",
+    "/admin",
     "/",
   ];
-  const isAuthPage = authPaths.includes(location.pathname);
+  const isAuthPage = hideNavbarFooterPaths.includes(location.pathname);
 
   const navLinks = [
     { name: "Home", href: "/home" },
@@ -29,7 +30,6 @@ function App() {
         { name: "Obstetrics", href: "/obstetrics" },
         { name: "Andrology", href: "/andrology" },
         { name: "Laparoscopy", href: "/laparoscopy" },
-        { name: "Oncology", href: "/oncology" },
         { name: "Parental Care", href: "/parentalcare" },
         { name: "Ultrasonography", href: "/ultrasonography" },
       ],

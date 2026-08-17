@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Mail, Lock, User, Phone, Calendar as CalendarIcon, Eye, EyeOff, ArrowRight, ShieldCheck, HeartPulse, CheckCircle2 } from 'lucide-react';
 import api from '../../api/api';
+import logo from '../../assets/vsh-logo-black.svg';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -15,6 +17,8 @@ const Signup = () => {
     agreeToTerms: false,
     agreeToMarketing: false
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -61,7 +65,7 @@ const Signup = () => {
     } catch (err) {
       setError(
         err.response?.data?.message || 
-        'Registration failed. Please try again.'
+        'Registration failed. Please check your information and try again.'
       );
     } finally {
       setLoading(false);
@@ -69,261 +73,299 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex font-['Crimson_Pro']">
-      {/* Main container */}
-      <div className="w-full grid md:grid-cols-2 gap-0 bg-white">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-nunito">
+      {/* Container */}
+      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 border border-gray-100 min-h-[680px]">
+        
+        {/* Left Side: Brand Panel */}
+        <div className="md:col-span-5 bg-gradient-to-br from-[#4A247A] via-[#6B3FA0] to-[#2B124C] p-8 sm:p-10 text-white flex flex-col justify-between relative overflow-hidden">
+          {/* Background Blurs */}
+          <div className="absolute -top-12 -right-12 w-48 h-48 bg-purple-400/20 rounded-full blur-2xl pointer-events-none"></div>
+          <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-pink-400/20 rounded-full blur-2xl pointer-events-none"></div>
 
-        {/* Left side - Hospital Image */}
-        <div className="hidden md:flex bg-gradient-to-b from-blue-900/80 to-blue-800/80 relative overflow-hidden items-end justify-start p-12">
-          {/* Background image with overlay */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: 'url("https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=800&fit=crop")',
-              opacity: 0.9
-            }}
-          ></div>
-          
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/30"></div>
-          
-          {/* Content overlay */}
+          {/* Top Brand Header */}
           <div className="relative z-10">
-            <h1 className="text-5xl font-bold text-white mb-4 leading-tight font-['Playfair_Display']">
-              Begin Your<br />
-              Health<br />
-              Journey
+            <Link to="/home" className="inline-block bg-white/15 backdrop-blur-md p-3 rounded-2xl border border-white/20 mb-8 hover:bg-white/25 transition-all">
+              <img src={logo} alt="Vayushri Hospital" className="h-9 w-auto brightness-0 invert" />
+            </Link>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-300/30 text-amber-200 text-xs font-semibold uppercase tracking-wider mb-4">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Join Vayushri Care</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-bold leading-tight font-inter">
+              Begin Your <span className="text-amber-300 font-extrabold">Health</span> Journey
             </h1>
-            <p className="text-gray-200 text-lg font-['Lato']">
-              Join thousands of patients who trust us with their healthcare.
+            <p className="mt-3 text-purple-100 text-sm sm:text-base leading-relaxed">
+              Create your patient account to book consultations, track appointment status, and access specialized reproductive & maternal healthcare.
             </p>
+          </div>
+
+          {/* Feature Pillars */}
+          <div className="relative z-10 space-y-3.5 my-8">
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/10">
+              <div className="w-8 h-8 rounded-lg bg-amber-400/20 flex items-center justify-center flex-shrink-0 text-amber-300">
+                <HeartPulse className="w-4 h-4" />
+              </div>
+              <span className="text-xs sm:text-sm font-medium text-white/90">Top Fertility & Women's Health Experts</span>
+            </div>
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/10">
+              <div className="w-8 h-8 rounded-lg bg-amber-400/20 flex items-center justify-center flex-shrink-0 text-amber-300">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <span className="text-xs sm:text-sm font-medium text-white/90">Private & Confidential Health Data</span>
+            </div>
+          </div>
+
+          {/* Footer Note */}
+          <div className="relative z-10 text-xs text-purple-200/80 border-t border-white/15 pt-4">
+            Already have an account? <Link to="/login" className="text-amber-300 font-bold hover:underline">Sign In Here</Link>
           </div>
         </div>
 
-        {/* Right side - Signup form */}
-        <div className="flex flex-col justify-center p-8 md:p-16 bg-white overflow-y-auto max-h-screen">
-          <div className="mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <svg className="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
-              <h3 className="text-2xl font-bold text-gray-800 font-['Playfair_Display']">Vayushri Hospital</h3>
+        {/* Right Side: Signup Form */}
+        <div className="md:col-span-7 p-8 sm:p-10 flex flex-col justify-center bg-white overflow-y-auto max-h-[90vh]">
+          <div className="max-w-lg mx-auto w-full">
+            
+            {/* Header */}
+            <div className="mb-6">
+              <h2 className="text-3xl font-bold text-gray-900 font-inter">Create Account</h2>
+              <p className="text-gray-500 text-sm mt-1">Fill in your details to register as a patient</p>
             </div>
-            <p className="text-gray-500 text-sm mb-8 font-['Lato']">Trusted Healthcare Since 2019</p>
-            <h2 className="text-4xl font-bold text-gray-900 mb-2 font-['Playfair_Display']">Create account</h2>
-            <p className="text-gray-600 font-['Lato']">Start your journey to better health today</p>
-          </div>
 
-          {/* Error Message */}
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-700 font-['Lato']">{error}</p>
-            </div>
-          )}
+            {/* Error Banner */}
+            {error && (
+              <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm font-medium">
+                {error}
+              </div>
+            )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Name fields */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 font-['Lato']">
-                  First Name
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              
+              {/* First Name & Last Name */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                    First Name
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                      <User className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                      placeholder="First Name"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#6B3FA0]/30 focus:border-[#6B3FA0] transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Last Name
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                      <User className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                      placeholder="Last Name"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#6B3FA0]/30 focus:border-[#6B3FA0] transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Email Address */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  Email Address
                 </label>
-                <input
-                  id="firstName"
-                  name="firstName"
-                  type="text"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors bg-white font-['Lato']"
-                  placeholder="John"
-                  required
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter email address"
+                    className="w-full pl-10 pr-3.5 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#6B3FA0]/30 focus:border-[#6B3FA0] transition-all"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-1">
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 font-['Lato']">
-                  Last Name
+              {/* Phone & DOB */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Phone Number
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                      <Phone className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      placeholder="Enter 10-digit phone number"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#6B3FA0]/30 focus:border-[#6B3FA0] transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Date of Birth
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                      <CalendarIcon className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="date"
+                      name="dateOfBirth"
+                      value={formData.dateOfBirth}
+                      onChange={handleChange}
+                      required
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#6B3FA0]/30 focus:border-[#6B3FA0] transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Password & Confirm Password */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                      <Lock className="w-4 h-4" />
+                    </div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                      minLength={8}
+                      placeholder="Enter password"
+                      className="w-full pl-10 pr-10 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#6B3FA0]/30 focus:border-[#6B3FA0] transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                      <Lock className="w-4 h-4" />
+                    </div>
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      required
+                      placeholder="Confirm password"
+                      className="w-full pl-10 pr-10 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#6B3FA0]/30 focus:border-[#6B3FA0] transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                    >
+                      {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Checkboxes */}
+              <div className="space-y-2 pt-2">
+                <label className="flex items-start gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="agreeToTerms"
+                    checked={formData.agreeToTerms}
+                    onChange={handleChange}
+                    required
+                    className="w-4 h-4 text-[#6B3FA0] rounded border-gray-300 focus:ring-[#6B3FA0] mt-0.5 accent-[#6B3FA0]"
+                  />
+                  <span className="text-xs text-gray-600 leading-relaxed">
+                    I agree to the <Link to="#" className="text-[#6B3FA0] font-bold hover:underline">Terms of Service</Link> and <Link to="#" className="text-[#6B3FA0] font-bold hover:underline">Privacy Policy</Link>
+                  </span>
                 </label>
-                <input
-                  id="lastName"
-                  name="lastName"
-                  type="text"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors bg-white font-['Lato']"
-                  placeholder="Doe"
-                  required
-                />
               </div>
-            </div>
 
-            {/* Email field */}
-            <div className="space-y-1">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 font-['Lato']">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors bg-white font-['Lato']"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
-
-            {/* Phone field */}
-            <div className="space-y-1">
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 font-['Lato']">
-                Phone number
-              </label>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors bg-white font-['Lato']"
-                placeholder="(555) 123-4567"
-                required
-              />
-            </div>
-
-            {/* Date of Birth field */}
-            <div className="space-y-1">
-              <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 font-['Lato']">
-                Date of birth
-              </label>
-              <input
-                id="dateOfBirth"
-                name="dateOfBirth"
-                type="date"
-                value={formData.dateOfBirth}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors bg-white font-['Lato']"
-                required
-              />
-            </div>
-
-            {/* Password fields */}
-            <div className="space-y-1">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 font-['Lato']">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors bg-white font-['Lato']"
-                placeholder="••••••••"
-                required
-                minLength={8}
-              />
-              <p className="text-xs text-gray-500 font-['Lato']">At least 8 characters</p>
-            </div>
-
-            <div className="space-y-1">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 font-['Lato']">
-                Confirm password
-              </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors bg-white font-['Lato']"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-
-            {/* Checkboxes */}
-            <div className="space-y-2 pt-2">
-              <label className="flex items-start gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="agreeToTerms"
-                  checked={formData.agreeToTerms}
-                  onChange={handleChange}
-                  className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-2 focus:ring-purple-500 mt-0.5 flex-shrink-0 accent-purple-600"
-                  required
-                />
-                <span className="text-sm text-gray-700 font-['Lato']">
-                  I agree to the <Link to="#" className="text-purple-600 hover:text-purple-700 font-semibold">Terms of Service</Link> and <Link to="#" className="text-purple-600 hover:text-purple-700 font-semibold">Privacy Policy</Link>
-                </span>
-              </label>
-
-              <label className="flex items-start gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="agreeToMarketing"
-                  checked={formData.agreeToMarketing}
-                  onChange={handleChange}
-                  className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-2 focus:ring-purple-500 mt-0.5 flex-shrink-0 accent-purple-600"
-                />
-                <span className="text-sm text-gray-700 font-['Lato']">
-                  Send me health tips and updates
-                </span>
-              </label>
-            </div>
-
-            {/* Submit button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-purple-600 text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-['Lato']"
-            >
-              {loading ? 'Creating Account...' : 'Create Account'}
-            </button>
-
-            {/* Divider */}
-            <div className="relative my-4">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500 font-['Lato']">OR CONTINUE WITH</span>
-              </div>
-            </div>
-
-            {/* Google signup button */}
-            <div>
+              {/* Submit Button */}
               <button
-                type="button"
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-all font-['Lato']"
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-[#6B3FA0] to-[#7A48B7] hover:opacity-95 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-[#6B3FA0]/25 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-sm sm:text-base mt-4 transform active:scale-[0.99]"
               >
-                <svg className="w-5 h-5" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                <span className="text-sm font-medium text-gray-700">Continue with Google</span>
+                {loading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Creating Account...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Create Account</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
-            </div>
 
-            {/* Sign in link */}
-            <p className="text-center text-sm text-gray-600 font-['Lato']">
-              Already have an account?{' '}
-              <Link to="/login" className="font-semibold text-purple-600 hover:text-purple-700 transition-colors">
-                Sign in
-              </Link>
-            </p>
-          </form>
+              {/* Link to Login */}
+              <div className="text-center pt-3 border-t border-gray-100">
+                <p className="text-sm text-gray-600">
+                  Already have an account?{' '}
+                  <Link to="/login" className="font-bold text-[#6B3FA0] hover:text-[#4A247A] transition-colors">
+                    Sign in
+                  </Link>
+                </p>
+              </div>
+
+            </form>
+          </div>
         </div>
-      </div>
 
-      {/* Font imports */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;600;700&family=Crimson+Pro:wght@300;400;600&display=swap');
-      `}</style>
+      </div>
     </div>
   );
 };
+
+// Helper Sparkles
+const Sparkles = ({ className }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+  </svg>
+);
 
 export default Signup;

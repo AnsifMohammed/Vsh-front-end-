@@ -1,6 +1,7 @@
 import Button from '../../../Components/Common/Button';
 import supportbg from '../../../assets/supportbg.webp';
 import { Calculator, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const WhatsAppIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -16,6 +17,8 @@ const Support = ({
   phoneNumber = "+919876543210",
   whatsappNumber = "+919876543210"
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex items-center justify-center p-4">
       <div className="w-full max-w-6xl  sm:px-6 sm:py-6 md:px-8 md:py-8 " >
@@ -43,7 +46,7 @@ const Support = ({
                 size="lg"
                 className="bg-purple-600 hover:bg-purple-700"
                 startIcon={<Calendar />}
-                onClick={() => window.location.href = 'appointment'}
+                onClick={() => navigate('/appointment')}
               >
                 {primaryButtonText}
               </Button>

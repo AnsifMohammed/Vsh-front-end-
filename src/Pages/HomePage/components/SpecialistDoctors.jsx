@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import Badge from '../../../Components/Common/Badge';
 import Card from "../../../Components/Common/Card";
 import Button from '../../../Components/Common/Button';
@@ -7,24 +8,95 @@ import imgShanmugapriya from '../../../assets/Doctorimages/shanmugapriya.webp';
 import imgRobin from '../../../assets/Doctorimages/robin.webp';
 import imgAravind from '../../../assets/Doctorimages/aravind.webp';
 import imgSneha from '../../../assets/Doctorimages/sneha.webp';
+import api from "../../../api/api";
+
+const getDoctorImage = (doctor) => {
+  if (doctor.image) return doctor.image;
+  const name = doctor.name.toLowerCase();
+  if (name.includes("shanmugapriya")) return imgShanmugapriya;
+  if (name.includes("robin")) return imgRobin;
+  if (name.includes("aravind")) return imgAravind;
+  if (name.includes("srividhya") || name.includes("sneha")) return imgSneha;
+  return null;
+};
+
+const getHomepageDoctorDetails = (doctor) => {
+  const name = doctor.name.toLowerCase();
+  if (name.includes("shanmugapriya")) {
+    return {
+      specialization: "Fertility Specialist",
+      credentials: "MD, DGO, Fellowship in IVF",
+      description: "Leading fertility specialist with expertise in advanced reproductive technologies and personalized treatment approaches."
+    };
+  }
+  if (name.includes("robin")) {
+    return {
+      specialization: "Anaesthetist",
+      credentials: "MBBS, MD - Madras Engineering College",
+      description: "ICU Specialist and Intensivist with expertise in critical care, anaesthesia, and pain management."
+    };
+  }
+  if (name.includes("srividhya") || name.includes("sneha")) {
+    return {
+      specialization: "Embryologist",
+      credentials: "18 years experience. PGD pgs, ICSI freezing thawing",
+      description: "Expert embryologist specializing in PGD, PGS, ICSI freezing and thawing techniques."
+    };
+  }
+  if (name.includes("aravind")) {
+    return {
+      specialization: "Paediatrician and Neonatologist",
+      credentials: "General and Vaccination Consultant",
+      description: "Expert in paediatrics and neonatology with specialization in general consultation and vaccination programs."
+    };
+  }
+  return {
+    specialization: doctor.specialties && doctor.specialties.length > 0 ? doctor.specialties[0] : "Specialist",
+    credentials: doctor.degree || "",
+    description: doctor.education || "Experienced medical consultant."
+  };
+};
+
+const getHomepageExperience = (doctor) => {
+  const name = doctor.name.toLowerCase();
+  if (name.includes("shanmugapriya")) return "19+ Years";
+  if (name.includes("robin")) return "24+ Years";
+  if (name.includes("srividhya") || name.includes("sneha")) return "18+ Years";
+  if (name.includes("aravind")) return "12+ Years";
+  if (doctor.experience) {
+    const match = doctor.experience.match(/(\d+)/);
+    if (match) {
+      return `${match[1]}+ Years`;
+    }
+  }
+  return "Expert";
+};
 
 const DoctorCard = ({ doctor }) => {
+  const { specialization, credentials, description } = getHomepageDoctorDetails(doctor);
+  const experience = getHomepageExperience(doctor);
 
   return (
     <Card className="text-center">
       {/* Doctor Image with Badge */}
       <div className="relative inline-block mb-4">
         <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-100 mx-auto">
-          <img
-            src={doctor.image}
-            alt={doctor.name}
-            className="w-full h-full object-cover object-top"
-          />
+          {getDoctorImage(doctor) ? (
+            <img
+              src={getDoctorImage(doctor)}
+              alt={doctor.name}
+              className="w-full h-full object-cover object-top"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xl font-bold">
+              {doctor.name.split(' ').map(n => n[0]).join('')}
+            </div>
+          )}
         </div>
         {/* Experience Badge */}
         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2">
           <Badge variant="primary" size="small" type='soft' className='w-20 border border-[#B9D4F9]-100 p-6'>
-            {doctor.experience}
+            {experience}
           </Badge>
         </div>
       </div>
@@ -36,17 +108,17 @@ const DoctorCard = ({ doctor }) => {
 
       {/* Specialization Badge */}
       <p className="mb-3 font-nunito text-gold font-bold">
-        {doctor.specialization}
+        {specialization}
       </p>
 
       {/* Credentials */}
       <p className="text-sm  mb-4 font-bold font-nunito">
-        {doctor.credentials}
+        {credentials}
       </p>
 
       {/* Description */}
-      <p className="text-gray-600 card-sub-title leading-relaxed ">
-        {doctor.description}
+      <p className="text-gray-600 card-sub-title leading-relaxed line-clamp-3">
+        {description}
       </p>
     </Card>
   );
@@ -55,44 +127,25 @@ const DoctorCard = ({ doctor }) => {
 // Main Unified Specialist Doctors Component
 const SpecialistDoctors = () => {
   const navigate = useNavigate();
-  const doctors = [
-    {
-      id: 1,
-      name: "Dr. Shanmugapriya",
-      specialization: "Fertility Specialist",
-      credentials: "MD, DGO, Fellowship in IVF",
-      experience: "19+ Years",
-      description: "Leading fertility specialist with expertise in advanced reproductive technologies and personalized treatment approaches.",
-      image: imgShanmugapriya
-    },
-    {
-      id: 2,
-      name: "Dr. Robin",
-      specialization: "Anaesthetist",
-      credentials: "MBBS, MD - Madras Engineering College",
-      experience: "24+ Years",
-      description: "ICU Specialist and Intensivist with expertise in critical care, anaesthesia, and pain management.",
-      image: imgRobin
-    },
-    {
-      id: 3,
-      name: "Dr. Srividhya",
-      specialization: "Embryologist",
-      credentials: "18 years experience. PGD pgs, ICSI freezing thawing",
-      experience: "18+ Years",
-      description: "Expert embryologist specializing in PGD, PGS, ICSI freezing and thawing techniques.",
-      image: imgSneha
-    },
-    {
-      id: 4,
-      name: "Dr. Aravind",
-      specialization: "Paediatrician and Neonatologist",
-      credentials: "General and Vaccination Consultant",
-      experience: "12+ Years",
-      description: "Expert in paediatrics and neonatology with specialization in general consultation and vaccination programs.",
-      image: imgAravind
-    }
-  ];
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await api.get("/doctors");
+        if (response.data.success) {
+          // Display top 4 doctors
+          setDoctors(response.data.data.slice(0, 4));
+        }
+      } catch (err) {
+        console.error("Failed to load homepage doctors:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDoctors();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 py-16 px-4">
@@ -122,7 +175,7 @@ const SpecialistDoctors = () => {
         {/* Doctors Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {doctors.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor} />
+            <DoctorCard key={doctor._id || doctor.id} doctor={doctor} />
           ))}
         </div>
 

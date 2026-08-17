@@ -11,7 +11,6 @@ import DandrologyPage from "../Pages/ServicePage/Dandrology";
 import GynecologyPage from "../Pages/ServicePage/Gynecology";
 import LaparoscopyPage from "../Pages/ServicePage/Laparoscopy";
 import ObstetricPage from "../Pages/ServicePage/Obstetrics";
-import OncologyPage from "../Pages/ServicePage/Oncology";
 import ParentalCarePage from "../Pages/ServicePage/ParentalCare";
 import UltraSonographyPage from "../Pages/ServicePage/Ultrasonography";
 import Login from "../Pages/Auth/Login";
@@ -61,7 +60,6 @@ export default function AppRoutes() {
       <Route path="/gynecology" element={<GynecologyPage />} />
       <Route path="/laparoscopy" element={<LaparoscopyPage />} />
       <Route path="/obstetrics" element={<ObstetricPage />} />
-      <Route path="/oncology" element={<OncologyPage />} />
       <Route path="/parentalcare" element={<ParentalCarePage />} />
       <Route path="/ultrasonography" element={<UltraSonographyPage />} />
 

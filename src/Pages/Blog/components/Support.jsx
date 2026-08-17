@@ -1,5 +1,6 @@
 import Button from '../../../Components/Common/Button';
 import supportbg from '../../../assets/supportbg.webp';
+import { useNavigate } from 'react-router-dom';
 
 const WhatsAppIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -7,6 +8,8 @@ const WhatsAppIcon = () => (
   </svg>
 );
 const Support = () => {
+  const navigate = useNavigate();
+
   return (
     <div className=" flex items-center justify-center p-4">
       <div className="w-full max-w-6xl  sm:px-6 sm:py-12 md:px-8 md:py-16 " >
@@ -20,11 +23,11 @@ const Support = () => {
           
           {/* Content */}
           <div className="relative z-10 px-8 py-16 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-[#1a0d2e] mb-4">
               Stay Updated
             </h1>
             
-            <p className="text-purple-100 text-lg mb-8">
+            <p className="text-[#6B3FA0] text-lg mb-8">
               Subscribe to our newsletter for the latest articles, health tips, and fertility insights
             </p>
             
@@ -33,7 +36,7 @@ const Support = () => {
                 variant="primary"
                 size="lg"
                 className="bg-purple-600 hover:bg-purple-700"
-                 onClick={() => window.location.href = 'appointment'}
+                 onClick={() => navigate('/appointment')}
               >
                 Book Consultation
               </Button>

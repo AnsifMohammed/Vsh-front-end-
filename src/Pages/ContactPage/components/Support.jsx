@@ -43,7 +43,7 @@ const Support = () => {
                 size="lg"
                 className="bg-gray-800/50 hover:bg-gray-700/60 text-white backdrop-blur-sm"
                 startIcon={<WhatsAppIcon />}
-                 onClick={() => window.location.href = 'appointment'}
+                onClick={() => window.open('https://wa.me/917708555635', '_blank')}
               >
                 Emergency WhatsApp
               </Button>

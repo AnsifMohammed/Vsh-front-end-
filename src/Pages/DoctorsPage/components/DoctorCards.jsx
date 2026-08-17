@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, GraduationCap } from 'lucide-react';
 import imgShanmugapriya from '../../../assets/Doctorimages/shanmugapriya.webp';
 import imgRobin from '../../../assets/Doctorimages/robin.webp';
@@ -7,65 +7,84 @@ import imgSneha from '../../../assets/Doctorimages/sneha.webp';
 import Button from '../../../Components/Common/Button';
 import Badge from '../../../Components/Common/Badge';
 import { useNavigate } from 'react-router-dom';
+import api from '../../../api/api';
+
+const getDoctorImage = (doctor) => {
+  if (doctor.image) {
+    return doctor.image;
+  }
+  const name = doctor.name.toLowerCase();
+  if (name.includes("shanmugapriya")) return imgShanmugapriya;
+  if (name.includes("robin")) return imgRobin;
+  if (name.includes("aravind")) return imgAravind;
+  if (name.includes("srividhya") || name.includes("sneha")) return imgSneha;
+  return null;
+};
 
 const DoctorCard = ({ doctor }) => {
   const navigate = useNavigate();
 
   const handleBookNow = () => {
-    navigate('/appointment');
+    const specialty = doctor.specialties && doctor.specialties.length > 0 ? doctor.specialties[0] : '';
+    navigate('/appointment', {
+      state: {
+        doctorName: doctor.name,
+        specialty: specialty
+      }
+    });
   };
 
   return (
-    <div className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 w-full flex flex-col h-full">
-      {/* Image Section - Fixed Height */}
-      <div className="relative h-64 sm:h-72 md:h-80 overflow-hidden flex-shrink-0 group">
-        {doctor.image ? (
+    <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 w-full flex flex-col h-full">
+      {/* Image Section - Compact Height */}
+      <div className="relative h-48 sm:h-52 overflow-hidden flex-shrink-0 group bg-gray-50">
+        {getDoctorImage(doctor) ? (
           <img
-            src={doctor.image}
+            src={getDoctorImage(doctor)}
             alt={doctor.name}
-            className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
+            className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
             style={{ objectPosition: '50% 15%' }}
           />
         ) : (
-          <div className="h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+          <div className="h-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
             <div className="text-center">
-              <div className="w-24 h-24 mx-auto mb-3 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-3xl font-bold">
+              <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xl font-bold">
                 {doctor.name.split(' ').map(n => n[0]).join('')}
               </div>
-              <p className="text-gray-500 text-sm px-4">{doctor.degree}</p>
+              <p className="text-gray-400 text-xs px-2 truncate max-w-[150px]">{doctor.degree}</p>
             </div>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent"></div>
       </div>
 
       {/* Content Section */}
-      <div className="p-4 sm:p-6 flex flex-col flex-1">
-        {/* Header - Fixed Height */}
-        <div className="h-[82px] mb-4 pb-3 border-b border-gray-100">
-          <h3 className="text-lg sm:text-xl font-semibold text-black mb-1 leading-tight line-clamp-2">
+      <div className="p-4 flex flex-col flex-1">
+        {/* Header - Compact Height */}
+        <div className="h-[74px] mb-3 pb-2 border-b border-gray-100">
+          <h3 className="text-base font-bold text-gray-900 leading-tight line-clamp-1" title={doctor.name}>
             {doctor.name}
           </h3>
-          <p className="text-xs sm:text-sm text-gold font-medium line-clamp-1">{doctor.degree}</p>
-          <p className="text-xs sm:text-sm text-gray-600 mt-1 flex items-center gap-2">
-            <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></span>
-            <span className="line-clamp-1">{doctor.experience}</span>
+          <p className="text-xs text-gold font-semibold truncate mt-0.5" title={doctor.degree}>{doctor.degree}</p>
+          <p className="text-xs text-gray-500 mt-1 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full flex-shrink-0"></span>
+            <span className="truncate">{doctor.experience}</span>
           </p>
         </div>
 
-        {/* Specialties - Fixed Height */}
-        <div className="mb-4 h-[98px]">
-          <h4 className="text-xs sm:text-sm font-bold text-gray-900 mb-2.5 flex items-center gap-2">
-            <span className="w-1 h-4 bg-purple-600 rounded-full"></span>
+        {/* Specialties - Compact */}
+        <div className="mb-3 h-[64px]">
+          <h4 className="text-xs font-bold text-gray-700 mb-1.5 flex items-center gap-1.5">
+            <span className="w-1 h-3.5 bg-purple-600 rounded-full"></span>
             Specialties
           </h4>
-          <div className="grid grid-cols-2 gap-1.5 h-[68px] overflow-hidden">
+          <div className="grid grid-cols-2 gap-1 h-[42px] overflow-hidden">
             {doctor.specialties.slice(0, 4).map((specialty, index) => (
               <Badge
                 key={index}
                 variant="primary"
                 type="soft"
-                className="text-black text-xs py-1 px-2.5 flex items-center justify-center text-center whitespace-nowrap overflow-hidden text-ellipsis"
+                className="text-black text-[10px] py-0.5 px-2 flex items-center justify-center text-center whitespace-nowrap overflow-hidden text-ellipsis rounded-md border border-purple-50"
               >
                 {specialty}
               </Badge>
@@ -73,18 +92,18 @@ const DoctorCard = ({ doctor }) => {
           </div>
         </div>
 
-        {/* Education - Fixed Height */}
-        <div className="mb-6 h-[92px] bg-gray-50 rounded-xl p-3.5 overflow-hidden">
-          <h4 className="text-xs sm:text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
-            <GraduationCap className="w-4 h-4 text-purple-600 flex-shrink-0" />
+        {/* Education - Compact */}
+        <div className="mb-4 h-[64px] bg-gray-50 rounded-lg p-2.5 overflow-hidden">
+          <h4 className="text-xs font-bold text-gray-700 mb-0.5 flex items-center gap-1.5">
+            <GraduationCap className="w-3.5 h-3.5 text-purple-600 flex-shrink-0" />
             Education
           </h4>
           {doctor.education && doctor.education.trim() !== '' ? (
-            <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
+            <p className="text-[10px] text-gray-500 leading-normal line-clamp-2">
               {doctor.education}
             </p>
           ) : (
-            <p className="text-xs text-gray-400 italic">Education details coming soon</p>
+            <p className="text-[10px] text-gray-400 italic">Education details coming soon</p>
           )}
         </div>
 
@@ -92,11 +111,11 @@ const DoctorCard = ({ doctor }) => {
         <div className="mt-auto pt-2 border-t border-gray-100">
           <Button
             variant="primary"
-            startIcon={<Calendar className="w-4 h-4" />}
-            className="w-full text-center cursor-pointer"
+            startIcon={<Calendar className="w-3.5 h-3.5" />}
+            className="w-full py-2 text-xs text-center cursor-pointer font-medium"
             onClick={handleBookNow}
           >
-            Book Now
+            Book Consultation
           </Button>
         </div>
       </div>
@@ -105,89 +124,44 @@ const DoctorCard = ({ doctor }) => {
 };
 
 export default function DoctorCards() {
-  const doctors = [
-    {
-      id: 1,
-      name: 'Dr. Shanmugapriya',
-      degree: 'MBBS, MD (Obs & Gynae)',
-      experience: "19 years experience in Women's Health",
-      image: imgShanmugapriya,
-      specialties: ['Gynecology', 'IVF', 'PCOS Treatment', 'Fertility'],
-      education: 'MBBS - Madras Medical College, Chennai • MD (Obs & Gynae) - Stanley Medical College'
-    },
-    {
-      id: 2,
-      name: 'Dr. Robin',
-      degree: 'MBBS, MD (Anaesthetist)',
-      experience: '24 years experience in ICU Specialist and Intensivist',
-      image: imgRobin,
-      specialties: ['Anaesthesia', 'ICU Care', 'Critical Care', 'Pain Management'],
-      education: 'MBBS, MD - Madras Engineering College'
-    },
-    {
-      id: 3,
-      name: 'Dr. Aravind',
-      degree: 'Paediatrician and Neonatologist',
-      experience: 'General and Vaccination Consultant',
-      image: imgAravind,
-      specialties: ['Paediatrics', 'Neonatology', 'Vaccination', 'General Consultation'],
-      education: 'MBBS, MD - Madras Medical College'
-    },
-    {
-      id: 4,
-      name: 'Dr. Srividhya',
-      degree: 'Embryologist',
-      experience: '18 years experience. PGD pgs, ICSI freezing thawing',
-      image: imgSneha,
-      specialties: ['PGD', 'PGS', 'ICSI Freezing Thawing'],
-      education: 'MBBS - Government Kilpauk Medical College, Chennai • MD (Gynecology & Obstetrics) - Saveetha Medical College'
-    },
-    {
-      id: 5,
-      name: 'Dr. Kurunji',
-      degree: 'Sonologist',
-      experience: 'Expert in ultrasound imaging and diagnostic sonography',
-      image: '',
-      specialties: ['Ultrasound Imaging', 'Diagnostic Sonography', 'Fetal Medicine', 'Obstetric Scanning'],
-      education: '-'
-    },
-    {
-      id: 6,
-      name: 'Dr. Patturajan',
-      degree: 'Specialist',
-      experience: 'Experienced medical consultant',
-      image: '',
-      specialties: ['General Medicine', 'Health Consultation', 'Preventive Care'],
-      education: '-'
-    },
-    {
-      id: 7,
-      name: 'Dr. Arun',
-      degree: 'Anaesthetist',
-      experience: 'Specialist in anaesthesia and critical care',
-      image: '',
-      specialties: ['Anaesthesia', 'Critical Care', 'Pain Management', 'Surgical Support'],
-      education: '-'
-    },
-    {
-      id: 8,
-      name: 'Dr. Shiva',
-      degree: 'Laparoscopic Surgeon',
-      experience: 'Expert in minimally invasive laparoscopic surgeries',
-      image: '',
-      specialties: ['Laparoscopic Surgery', 'Minimally Invasive Surgery', 'Gynecological Surgery', 'Diagnostic Laparoscopy'],
-      education: '-'
-    },
-    {
-      id: 9,
-      name: 'Dr. Babitha',
-      degree: 'Specialist',
-      experience: 'Experienced healthcare professional',
-      image: '',
-      specialties: ["Women's Health", 'Consultation', 'Patient Care'],
-      education: '-'
-    }
-  ];
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get("/doctors");
+        if (response.data.success) {
+          setDoctors(response.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch doctors:", err);
+        setError("Could not load doctors at this time.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDoctors();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-16 text-center">
+        <div className="w-10 h-10 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-gray-500 text-sm font-medium">Loading doctor profiles...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-16 text-center">
+        <p className="text-red-500 font-semibold text-sm">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -202,10 +176,10 @@ export default function DoctorCards() {
           </p>
         </div>
 
-        {/* Grid - Cards will now have uniform height */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {/* Grid - Compact 4-column tile layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {doctors.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor} />
+            <DoctorCard key={doctor._id || doctor.id} doctor={doctor} />
           ))}
         </div>
       </div>

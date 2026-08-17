@@ -1,17 +1,20 @@
 import FormInput from '../../Components/Common/FormInput';
 import Button from '../../Components/Common/Button';
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useToast } from '../../Components/Common/ToastProvider';
 import { Calendar, Phone, Mail, Clock, CheckCircle, MessageCircle, Save, Eye } from 'lucide-react';
 import api from "../../api/api";
 
 // Main Appointment Booking Component
 const AppointmentPage = () => {
+  const location = useLocation();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [savedAppointments, setSavedAppointments] = useState([]);
   const [showSaved, setShowSaved] = useState(false);
+  const [doctors, setDoctors] = useState([]);
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -27,6 +30,17 @@ const AppointmentPage = () => {
 
   // Get today's date for min date validation
   const today = new Date().toISOString().split('T')[0];
+
+  const formatAppointmentDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    const day = date.getUTCDate();
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = months[date.getUTCMonth()];
+    const year = date.getUTCFullYear();
+    return `${day} ${month} ${year}`;
+  };
 
   // Check if user is logged in
   useEffect(() => {
@@ -44,19 +58,66 @@ const AppointmentPage = () => {
         }
       }
     }
+
+    // Fetch doctors from API
+    const fetchDoctors = async () => {
+      try {
+        const response = await api.get("/doctors");
+        if (response.data.success) {
+          setDoctors(response.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to load doctors:", err);
+      }
+    };
+    fetchDoctors();
   }, []);
 
   // Auto-fill form if user is logged in
   useEffect(() => {
-    if (user && user.name) {
+    if (user) {
       setFormData(prev => ({
         ...prev,
-        fullName: user.name || '',
-        emailAddress: user.email || '',
-        phoneNumber: user.phone || ''
+        fullName: user.name || prev.fullName || '',
+        emailAddress: user.email || prev.emailAddress || '',
+        phoneNumber: user.phoneNumber || user.phone || prev.phoneNumber || ''
       }));
     }
   }, [user]);
+
+  // Pre-populate doctor and specialty from location state or query params
+  useEffect(() => {
+    const state = location.state;
+    const searchParams = new URLSearchParams(location.search);
+    const docFromParam = searchParams.get('doctor');
+    const specFromParam = searchParams.get('specialty');
+
+    const selectedDoctor = state?.doctorName || state?.doctor || docFromParam;
+    const selectedSpecialty = state?.specialty || specFromParam;
+
+    if (selectedDoctor || selectedSpecialty) {
+      setFormData(prev => ({
+        ...prev,
+        ...(selectedDoctor && { preferredDoctor: selectedDoctor }),
+        ...(selectedSpecialty && { specialty: selectedSpecialty })
+      }));
+    }
+  }, [location]);
+
+  // Ensure preferredDoctor matches exact name in fetched doctors list if available
+  useEffect(() => {
+    if (doctors.length > 0 && formData.preferredDoctor) {
+      const match = doctors.find(
+        (doc) =>
+          doc.name.toLowerCase() === formData.preferredDoctor.toLowerCase() ||
+          doc.name.toLowerCase().includes(formData.preferredDoctor.toLowerCase()) ||
+          formData.preferredDoctor.toLowerCase().includes(doc.name.toLowerCase())
+      );
+      if (match && match.name !== formData.preferredDoctor) {
+        setFormData(prev => ({ ...prev, preferredDoctor: match.name }));
+      }
+    }
+  }, [doctors, formData.preferredDoctor]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -106,11 +167,9 @@ const AppointmentPage = () => {
       return;
     }
 
-    // Date validation - don't allow past dates
-    const selectedDate = new Date(formData.preferredDate);
-    const todayDate = new Date();
-    todayDate.setHours(0, 0, 0, 0);
-    if (selectedDate < todayDate) {
+    // Date validation - don't allow past dates (timezone robust)
+    const todayStr = new Date().toLocaleDateString('en-CA');
+    if (formData.preferredDate < todayStr) {
       toast.error("Please select a future date");
       return;
     }
@@ -348,7 +407,6 @@ New Appointment Request 🏥
                         <option value="Andrology">Andrology</option>
                         <option value="Parental Care">Parental Care</option>
                         <option value="Ultrasonography">Ultrasonography</option>
-                        <option value="Oncology">Oncology</option>
                         <option value="General Consultation">General Consultation</option>
                       </select>
                     </div>
@@ -363,15 +421,11 @@ New Appointment Request 🏥
                         className="w-full px-4 py-2.5 text-base rounded-md border border-gray-300 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 outline-none"
                       >
                         <option value="">Any Available Doctor</option>
-                        <option value="Dr. Shanmugapriya">Dr. Shanmugapriya (Fertility Specialist)</option>
-                        <option value="Dr. Robin">Dr. Robin (Anaesthetist)</option>
-                        <option value="Dr. Aravind">Dr. Aravind (Paediatrician & Neonatologist)</option>
-                        <option value="Dr. Srividhya">Dr. Srividhya (Embryologist)</option>
-                        <option value="Dr. Kurunji">Dr. Kurunji (Sonologist)</option>
-                        <option value="Dr. Patturajan">Dr. Patturajan (Specialist)</option>
-                        <option value="Dr. Arun">Dr. Arun (Anaesthetist)</option>
-                        <option value="Dr. Shiva">Dr. Shiva (Laparoscopic Surgeon)</option>
-                        <option value="Dr. Babitha">Dr. Babitha (Specialist)</option>
+                        {doctors.map((doc) => (
+                          <option key={doc._id} value={doc.name}>
+                            {doc.name} ({doc.degree})
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -490,7 +544,7 @@ New Appointment Request 🏥
                               <p className="font-medium text-gray-900">{apt.specialty}</p>
                               <p className="text-gray-600">{apt.preferredDoctor || "Any doctor"}</p>
                               <p className="text-gray-500 text-xs">
-                                {new Date(apt.preferredDate).toLocaleDateString()} at {apt.preferredTime}
+                                {formatAppointmentDate(apt.preferredDate)} at {apt.preferredTime}
                               </p>
                             </div>
                             <span className={`text-xs px-2 py-1 rounded ${

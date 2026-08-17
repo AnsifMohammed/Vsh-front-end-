@@ -2,7 +2,7 @@ import FormInput from '../../../Components/Common/FormInput';
 import Badge from '../../../Components/Common/Badge';
 import Button from '../../../Components/Common/Button';
 import Card from "../../../Components/Common/Card";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '../../../Components/Common/ToastProvider';
 import { Heart, Phone, Mail, MapPin, Clock, AlertCircle, MessageCircle, Send } from 'lucide-react';
 
@@ -15,6 +15,18 @@ const ContactForm = () => {
     subject: '',
     message: ''
   });
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      setFormData(prev => ({
+        ...prev,
+        fullName: storedUser.name || '',
+        email: storedUser.email || '',
+        phoneNumber: storedUser.phoneNumber || storedUser.phone || ''
+      }));
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({

@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Menu, X, ChevronDown, Calendar } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Menu, X, ChevronDown, Calendar, LogOut, User as UserIcon } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Nav = ({
     navLinks = [],
@@ -8,8 +9,36 @@ const Nav = ({
     logo = {},
     linkcolor = "#FFFFFF"
 }) => {
+    const navigate = useNavigate();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(null);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const checkUser = () => {
+            const storedUser = localStorage.getItem('user');
+            if (storedUser) {
+                try {
+                    setUser(JSON.parse(storedUser));
+                } catch {
+                    setUser(null);
+                }
+            } else {
+                setUser(null);
+            }
+        };
+
+        checkUser();
+        window.addEventListener('storage', checkUser);
+        return () => window.removeEventListener('storage', checkUser);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        setUser(null);
+        window.dispatchEvent(new Event('storage'));
+        navigate('/login');
+    };
 
     const toggleDropdown = (name) => {
         setOpenDropdown(openDropdown === name ? null : name);
@@ -33,13 +62,13 @@ const Nav = ({
                     {/* Logo */}
                     <div className="flex items-center flex-shrink-0">
                         {logo && (
-                            <a href="/home" style={{ cursor: 'pointer' }} className="block">
+                            <Link to="/home" style={{ cursor: 'pointer' }} className="block">
                                 <img
                                     src={logo}
                                     alt="Vayushri Hospital"
                                     className="h-9 sm:h-10 w-auto object-contain"
                                 />
-                            </a>
+                            </Link>
                         )}
                     </div>
 
@@ -66,7 +95,7 @@ const Nav = ({
                                             <ChevronDown className="w-4 h-4" />
                                         </button>
 
-                                        {/* Dropdown */}
+                                         {/* Dropdown */}
                                         <div
                                             className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 rounded-2xl shadow-2xl transition-all duration-300 z-50 overflow-hidden border border-white/20 ${openDropdown === link.name
                                                     ? 'opacity-100 visible translate-y-0'
@@ -81,20 +110,26 @@ const Nav = ({
                                             onMouseLeave={() => setOpenDropdown(null)}
                                         >
                                             {link.dropdownItems?.map((item) => (
-                                                <a
+                                                <Link
                                                     key={item.name}
-                                                    href={item.href}
-                                                    onClick={item.onClick}
+                                                    to={item.href}
+                                                    onClick={(e) => {
+                                                        if (item.onClick) {
+                                                            e.preventDefault();
+                                                            item.onClick();
+                                                        }
+                                                        setOpenDropdown(null);
+                                                    }}
                                                     className="block px-4 py-2.5 text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors duration-200 text-[14px] font-nunito font-medium"
                                                 >
                                                     {item.name}
-                                                </a>
+                                                </Link>
                                             ))}
                                         </div>
                                     </>
                                 ) : (
-                                    <a
-                                        href={link.href}
+                                    <Link
+                                        to={link.href}
                                         onClick={link.onClick}
                                         className="font-nunito text-[15px] font-medium transition-all duration-300 px-4 py-2 rounded-full block"
                                         style={{ color: linkcolor }}
@@ -107,14 +142,14 @@ const Nav = ({
                                         }}
                                     >
                                         {link.name}
-                                    </a>
+                                    </Link>
                                 )}
                             </div>
                         ))}
                     </div>
 
                     {/* CTA Button - Desktop */}
-                    <div className="hidden lg:block flex-shrink-0">
+                    <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
                         <button
                             onClick={onCtaClick}
                             className="font-nunito font-semibold text-[15px] text-white px-5 py-2.5 rounded-full flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg"
@@ -127,6 +162,25 @@ const Nav = ({
                             <Calendar className="w-4 h-4" strokeWidth={2.5} />
                             <span>{ctaText}</span>
                         </button>
+
+                        {user ? (
+                            <button
+                                onClick={handleLogout}
+                                title={`Logged in as ${user.name || user.email}`}
+                                className="font-nunito font-semibold text-[14px] text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 px-4 py-2.5 rounded-full flex items-center gap-1.5 transition-all duration-300 hover:scale-105 cursor-pointer"
+                            >
+                                <LogOut className="w-4 h-4" />
+                                <span>Logout</span>
+                            </button>
+                        ) : (
+                            <Link
+                                to="/login"
+                                className="font-nunito font-semibold text-[14px] text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-4 py-2.5 rounded-full flex items-center gap-1.5 transition-all duration-300 hover:scale-105"
+                            >
+                                <UserIcon className="w-4 h-4" />
+                                <span>Login</span>
+                            </Link>
+                        )}
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -179,9 +233,9 @@ const Nav = ({
                                             }`}
                                     >
                                         {link.dropdownItems?.map((item) => (
-                                            <a
+                                            <Link
                                                 key={item.name}
-                                                href={item.href}
+                                                to={item.href}
                                                 onClick={(e) => {
                                                     if (item.onClick) {
                                                         e.preventDefault();
@@ -193,13 +247,13 @@ const Nav = ({
                                                 style={{ color: linkcolor }}
                                             >
                                                 {item.name}
-                                            </a>
+                                            </Link>
                                         ))}
                                     </div>
                                 </>
                             ) : (
-                                <a
-                                    href={link.href}
+                                <Link
+                                    to={link.href}
                                     onClick={(e) => {
                                         if (link.onClick) {
                                             e.preventDefault();
@@ -211,27 +265,51 @@ const Nav = ({
                                     style={{ color: linkcolor }}
                                 >
                                     {link.name}
-                                </a>
+                                </Link>
                             )}
                         </div>
                     ))}
 
-                    {/* Mobile CTA Button */}
-                    <button
-                        onClick={() => {
-                            onCtaClick();
-                            setIsMobileMenuOpen(false);
-                        }}
-                        className="w-full font-nunito font-semibold text-[15px] text-white px-6 py-3 rounded-full flex items-center justify-center gap-2 transition-all duration-300 mt-3"
-                        style={{
-                            background:
-                                'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%)',
-                            boxShadow: '0 8px 24px -8px rgba(124, 58, 237, 0.6)',
-                        }}
-                    >
-                        <Calendar className="w-4 h-4" strokeWidth={2.5} />
-                        <span>{ctaText}</span>
-                    </button>
+                    {/* Mobile CTA & Auth Buttons */}
+                    <div className="pt-2 space-y-2">
+                        <button
+                            onClick={() => {
+                                onCtaClick();
+                                setIsMobileMenuOpen(false);
+                            }}
+                            className="w-full font-nunito font-semibold text-[15px] text-white px-6 py-3 rounded-full flex items-center justify-center gap-2 transition-all duration-300"
+                            style={{
+                                background:
+                                    'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%)',
+                                boxShadow: '0 8px 24px -8px rgba(124, 58, 237, 0.6)',
+                            }}
+                        >
+                            <Calendar className="w-4 h-4" strokeWidth={2.5} />
+                            <span>{ctaText}</span>
+                        </button>
+
+                        {user ? (
+                            <button
+                                onClick={() => {
+                                    handleLogout();
+                                    setIsMobileMenuOpen(false);
+                                }}
+                                className="w-full font-nunito font-semibold text-[15px] text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 px-6 py-2.5 rounded-full flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer"
+                            >
+                                <LogOut className="w-4 h-4" />
+                                <span>Logout ({user.name ? user.name.split(' ')[0] : 'Account'})</span>
+                            </button>
+                        ) : (
+                            <Link
+                                to="/login"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="w-full font-nunito font-semibold text-[15px] text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-6 py-2.5 rounded-full flex items-center justify-center gap-2 transition-all duration-300 text-center"
+                            >
+                                <UserIcon className="w-4 h-4" />
+                                <span>Login</span>
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </div>
         </nav>

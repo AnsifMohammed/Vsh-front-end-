@@ -7,7 +7,6 @@ import MapSection from "./components/MapSection";
 import SpecialistDoctors from "./components/SpecialistDoctors";
 import StatsBanner from "./components/Stasbanner";
 import StatsCard from "./components/StatsCard";
-import BabyQuotes from "./components/BabyQuotes";
 import { useState } from "react";
 
 function HomePage() {
@@ -20,7 +19,6 @@ function HomePage() {
       <HealthCalculator />
       <HealthcareJourney selectedPath={selectedPath} onSelectPath={setSelectedPath} />
       <HealthcareTreatments selectedFilter={selectedPath} />
-      <BabyQuotes />
       <SpecialistDoctors />
       <StatsBanner />
       <Consultation />
