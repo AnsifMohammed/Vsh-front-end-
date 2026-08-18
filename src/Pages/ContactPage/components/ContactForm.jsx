@@ -165,7 +165,7 @@ const ContactForm = () => {
                   <p className="text-sm font-semibold text-gray-900 mb-1">Call Us</p>
                   <p className="text-sm text-gray-600 mb-0.5">Speak directly with our team</p>
                   <div className='flex justify-between w-full items-center flex-wrap'>
-                    <p className="text-yellow-600 font-semibold">+91 98765-43210</p>
+                    <a href="tel:+917708555635" className="text-yellow-600 font-semibold hover:underline">+91 77085 55635</a>
                     <p className="text-xs text-gray-500 mt-1">24/7 Emergency Support</p>
                   </div>
                 </div>
@@ -173,7 +173,10 @@ const ContactForm = () => {
             </div>
 
             {/* WhatsApp */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div 
+              onClick={() => window.open('https://wa.me/917708555635', '_blank')}
+              className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 cursor-pointer hover:border-green-300 hover:shadow-md transition-all"
+            >
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0">
                   <MessageCircle className="w-6 h-6 text-green-600" />
@@ -182,8 +185,8 @@ const ContactForm = () => {
                   <p className="text-sm font-semibold text-gray-900 mb-1">WhatsApp</p>
                   <p className="text-sm text-gray-600 mb-0.5">Quick responses & appointment booking</p>
                   <div className='flex justify-between w-full items-center flex-wrap'>
-                    <p className="text-yellow-600 font-semibold">Chat Now</p>
-                    <p className="text-xs text-gray-500 mt-1">9 AM - 9 PM Daily</p>
+                    <span className="text-green-600 font-semibold">+91 77085 55635</span>
+                    <p className="text-xs text-gray-500 mt-1">24/7 Quick Response</p>
                   </div>
                 </div>
               </div>
@@ -198,7 +201,7 @@ const ContactForm = () => {
                 <div className=" w-120">
                   <p className="text-sm font-semibold text-gray-900 mb-1">Email</p>
                   <p className="text-sm text-gray-600 mb-0.5">Detailed queries & medical reports</p>
-                  <div className='flex justify-between w-full items-center flex-wrap'><p className="text-yellow-600 font-semibold text-xs break-all">info@ayushifertility.com</p>
+                  <div className='flex justify-between w-full items-center flex-wrap'><a href="mailto:vyushriivfhospital@gmail.com" className="text-yellow-600 font-semibold text-xs break-all hover:underline">vyushriivfhospital@gmail.com</a>
                     <p className="text-xs text-gray-500 mt-1">Response within 24 hours</p></div>
 
                 </div>

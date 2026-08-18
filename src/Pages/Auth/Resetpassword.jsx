@@ -183,7 +183,7 @@ const ResetPassword = () => {
 
           {/* Footer Note */}
           <div className="relative z-10 text-xs text-purple-200/80 border-t border-white/15 pt-4">
-            Need help? Contact support at <a href="mailto:support@vayushri.com" className="text-amber-300 font-bold hover:underline">support@vayushri.com</a>
+            Need help? Contact support at <a href="mailto:vyushriivfhospital@gmail.com" className="text-amber-300 font-bold hover:underline">vyushriivfhospital@gmail.com</a>
           </div>
         </div>
 

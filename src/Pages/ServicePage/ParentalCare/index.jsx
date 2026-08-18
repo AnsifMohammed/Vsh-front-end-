@@ -226,8 +226,8 @@ function ParentalCarePage() {
         description="Our expert team is here to support you and your family through every milestone of new parenthood."
         primaryButtonText="Book Consultation"
         secondaryButtonText="WhatsApp"
-        phoneNumber="+919876543210"
-        whatsappNumber="+919876543210"
+        phoneNumber="+91 77085 55635"
+        whatsappNumber="+917708555635"
       />
 
     </div>

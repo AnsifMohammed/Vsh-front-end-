@@ -141,7 +141,7 @@ export default function Footer() {
                 <Phone size={18} className="text-gray-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-gray-400">
                   <p className="font-medium text-white mb-0.5 text-nunito">Phone</p>
-                  <p>7708555635</p>
+                  <p><a href="tel:+917708555635" className="hover:text-white transition-colors">+91 77085 55635</a></p>
                 </div>
               </div>
 
@@ -149,8 +149,7 @@ export default function Footer() {
                 <Mail size={18} className="text-gray-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-gray-400">
                   <p className="font-medium text-white mb-0.5 text-nunito">Email</p>
-                  <p>info@vayushrihospital.com</p>
-                  <p>appointments@vayushri.com</p>
+                  <p><a href="mailto:vyushriivfhospital@gmail.com" className="hover:text-white transition-colors">vyushriivfhospital@gmail.com</a></p>
                 </div>
               </div>
 

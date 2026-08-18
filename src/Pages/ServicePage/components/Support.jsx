@@ -14,8 +14,8 @@ const Support = ({
   description = "Join thousands of families who have achieved their dreams with our expert care and compassionate support",
   primaryButtonText = "Book Consultation",
   secondaryButtonText = "WhatsApp",
-  phoneNumber = "+919876543210",
-  whatsappNumber = "+919876543210"
+  phoneNumber = "+91 77085 55635",
+  whatsappNumber = "+917708555635"
 }) => {
   const navigate = useNavigate();
 

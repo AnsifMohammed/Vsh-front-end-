@@ -14,6 +14,12 @@ import {
   CheckCircle2,
   Clock,
   Stethoscope,
+  HelpCircle,
+  Sparkles,
+  Lightbulb,
+  Scale,
+  ArrowRight,
+  ShieldCheck,
 } from "lucide-react";
 import { Calendar as PrimeCalendar } from "primereact/calendar";
 import Card from "../../../Components/Common/Card";
@@ -21,6 +27,13 @@ import FormInput from "../../../Components/Common/FormInput";
 import Button from "../../../Components/Common/Button";
 import api from "../../../api/api";
 import babyImagepic from "../../../assets/OIP.webp";
+
+// Helper to block minus, plus, and exponent keys on numeric inputs
+const handleNumberKeyDown = (e) => {
+  if (e.key === "-" || e.key === "e" || e.key === "E" || e.key === "+") {
+    e.preventDefault();
+  }
+};
 const Modal = ({ isOpen, onClose, children, title }) => {
   if (!isOpen) return null;
 
@@ -53,13 +66,18 @@ const CalculatorCard = ({
   fields,
   calculatorId,
   onCalculate,
+  onOpenGuide,
 }) => {
   const [formData, setFormData] = useState({});
 
-  const handleInputChange = (fieldName, value) => {
+  const handleInputChange = (fieldName, value, isNumber = false) => {
+    let cleanValue = value;
+    if (isNumber && typeof value === "string") {
+      cleanValue = value.replace(/[^0-9.]/g, "");
+    }
     setFormData((prev) => ({
       ...prev,
-      [fieldName]: value,
+      [fieldName]: cleanValue,
     }));
   };
 
@@ -69,17 +87,31 @@ const CalculatorCard = ({
 
   return (
     <div
-      className={`${bgColor} rounded-2xl p-5 shadow-sm border border-gray-200`}
+      className={`${bgColor} rounded-2xl p-5 shadow-sm border border-gray-200 flex flex-col justify-between`}
     >
-      <div className="flex items-start gap-3 mb-4">
-        <div className="flex-shrink-0 p-2 bg-white rounded-lg shadow-sm">
-          {icon}
+      <div>
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 p-2 bg-white rounded-lg shadow-sm">
+              {icon}
+            </div>
+            <div className="flex-1">
+              <h3 className="card-title text-black mb-0.5">{title}</h3>
+              <p className="card-sub-title text-gray-600">{subtitle}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenGuide?.(calculatorId);
+            }}
+            className="flex-shrink-0 p-1.5 text-gray-400 hover:text-purple-600 hover:bg-white/80 rounded-full transition-colors cursor-pointer"
+            title={`How to use ${title}`}
+          >
+            <HelpCircle className="w-4 h-4" />
+          </button>
         </div>
-        <div className="flex-1">
-          <h3 className="card-title text-black mb-0.5">{title}</h3>
-          <p className="card-sub-title text-gray-600">{subtitle}</p>
-        </div>
-      </div>
 
       <div className="grid grid-cols-1 gap-3 mb-4">
         {fields.map((field) =>
@@ -117,15 +149,25 @@ const CalculatorCard = ({
               label={field.label}
               placeholder={field.placeholder}
               required={field.required}
+              min={field.type === "number" ? "1" : undefined}
+              onKeyDown={field.type === "number" ? handleNumberKeyDown : undefined}
               value={formData[field.name] || ""}
-              onChange={(e) => handleInputChange(field.name, e.target.value)}
+              onChange={(e) =>
+                handleInputChange(
+                  field.name,
+                  e.target.value,
+                  field.type === "number"
+                )
+              }
               {...field.extraProps}
             />
           ),
         )}
       </div>
 
-      <div className="grid grid-cols-1 gap-3">
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 pt-2">
         <Button
           variant="outline"
           fullWidth
@@ -152,6 +194,285 @@ const CalculatorCard = ({
     </div>
   );
 };
+
+// 🌟 Friendly "How to Use" Popup Card Component
+const HowToUseModal = ({
+  isOpen,
+  onClose,
+  initialTab = "menstrual",
+  onOpenCalculator,
+}) => {
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab, isOpen]);
+
+  if (!isOpen) return null;
+
+  const guideTabs = [
+    {
+      id: "menstrual",
+      label: "Period Tracker",
+      icon: <LucideCalendar className="w-4 h-4 text-pink-500" />,
+      activeClass: "bg-pink-50 text-pink-700 border-pink-300 ring-2 ring-pink-500/20 shadow-sm",
+    },
+    {
+      id: "pregnancy",
+      label: "Pregnancy Assistant",
+      icon: <Baby className="w-4 h-4 text-blue-500" />,
+      activeClass: "bg-blue-50 text-blue-700 border-blue-300 ring-2 ring-blue-500/20 shadow-sm",
+    },
+    {
+      id: "bmi",
+      label: "BMI Calculator",
+      icon: <Activity className="w-4 h-4 text-emerald-500" />,
+      activeClass: "bg-emerald-50 text-emerald-700 border-emerald-300 ring-2 ring-emerald-500/20 shadow-sm",
+    },
+  ];
+
+  const guideDetails = {
+    menstrual: {
+      title: "Menstrual Cycle & Ovulation Tracker",
+      tagline: "Track natural rhythms, predict upcoming periods & fertile days effortlessly.",
+      badge: "Fertility & Period Rhythm",
+      badgeColor: "bg-pink-100 text-pink-700 border-pink-200",
+      themeColor: "text-pink-600",
+      accentBg: "bg-pink-50/70 border-pink-100",
+      stepNumBg: "bg-pink-500 text-white",
+      buttonColor: "bg-gradient-to-r from-pink-500 to-rose-500 text-white hover:opacity-95 shadow-pink-500/20",
+      steps: [
+        {
+          num: "1",
+          title: "Select Last Period Date",
+          desc: "Click the calendar and pick the first day your last period started (Day 1 of bleeding).",
+          highlight: "Day 1 of your cycle",
+        },
+        {
+          num: "2",
+          title: "Enter Your Cycle Length",
+          desc: "Count the number of days from the start of one period to the start of the next (typically 28 days, ranging 21–35).",
+          highlight: "Standard is 28 days",
+        },
+        {
+          num: "3",
+          title: "Get Instant Smart Predictions",
+          desc: "View your predicted next period date, ovulation day, and a 6-day fertile window to plan ahead with peace of mind.",
+          highlight: "Period + Ovulation + Fertile window",
+        },
+      ],
+      tip: "Every body is uniquely beautiful! Cycles can naturally fluctuate by 2–4 days due to stress, travel, or sleep patterns.",
+    },
+    pregnancy: {
+      title: "Pregnancy Milestone & Due Date Calculator",
+      tagline: "Explore baby size comparisons, developmental milestones, and clinical scan timelines.",
+      badge: "40-Week Baby Journey",
+      badgeColor: "bg-blue-100 text-blue-700 border-blue-200",
+      themeColor: "text-blue-600",
+      accentBg: "bg-blue-50/70 border-blue-100",
+      stepNumBg: "bg-blue-500 text-white",
+      buttonColor: "bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:opacity-95 shadow-blue-500/20",
+      steps: [
+        {
+          num: "1",
+          title: "Select Start Date (LMP)",
+          desc: "Choose the first day of your Last Menstrual Period (LMP) right before pregnancy.",
+          highlight: "First day of last period",
+        },
+        {
+          num: "2",
+          title: "Confirm Cycle Length (Optional)",
+          desc: "Defaults to 28 days. Adjust if your typical menstrual cycle was shorter or longer.",
+          highlight: "Default 28 days",
+        },
+        {
+          num: "3",
+          title: "Follow Your 40-Week Journey",
+          desc: "See your estimated due date, trimester progress, weekly fruit size (poppy seed to watermelon!), and medical scan schedule.",
+          highlight: "Due date + Scans + Milestones",
+        },
+      ],
+      tip: "Due dates are an estimated 40-week timeline (280 days). Full-term deliveries commonly occur anytime between 37 and 42 weeks!",
+    },
+    bmi: {
+      title: "BMI (Body Mass Index) & Health Calculator",
+      tagline: "Understand your body composition category and personalized wellness guidance.",
+      badge: "Health & Weight Insights",
+      badgeColor: "bg-emerald-100 text-emerald-700 border-emerald-200",
+      themeColor: "text-emerald-600",
+      accentBg: "bg-emerald-50/70 border-emerald-100",
+      stepNumBg: "bg-emerald-500 text-white",
+      buttonColor: "bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:opacity-95 shadow-emerald-500/20",
+      steps: [
+        {
+          num: "1",
+          title: "Enter Height in Centimeters",
+          desc: "Stand straight without footwear against a flat wall to measure your accurate height (e.g., 165 cm).",
+          highlight: "Measured in centimeters (cm)",
+        },
+        {
+          num: "2",
+          title: "Enter Weight in Kilograms",
+          desc: "For best accuracy, weigh yourself in the morning before meals on an accurate digital scale (e.g., 62 kg).",
+          highlight: "Measured in kilograms (kg)",
+        },
+        {
+          num: "3",
+          title: "Review Category & Guidance",
+          desc: "Discover if your BMI is Underweight (<18.5), Normal (18.5–24.9), Overweight (25–29.9), or Obese (30+) with medical advice.",
+          highlight: "Instant health category feedback",
+        },
+      ],
+      tip: "BMI is a helpful general screening indicator. For comprehensive fertility & prenatal care, our clinical specialists provide individualized support.",
+    },
+  };
+
+  const current = guideDetails[activeTab] || guideDetails.menstrual;
+
+  const handleLaunch = () => {
+    onClose();
+    if (onOpenCalculator) {
+      onOpenCalculator(activeTab);
+    }
+  };
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center">
+            <Sparkles className="w-4 h-4" />
+          </div>
+          <div>
+            <h3 className="text-base font-bold text-gray-900 font-inter leading-none">
+              How to Use Our Calculators
+            </h3>
+            <p className="text-xs text-gray-500 font-normal mt-0.5">
+              Simple 3-step guide for fast, accurate health insights
+            </p>
+          </div>
+        </div>
+      }
+    >
+      <div className="space-y-6">
+        {/* Tab Selection */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-1 bg-gray-50 rounded-2xl border border-gray-100">
+          {guideTabs.map((tab) => {
+            const isSelected = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border ${
+                  isSelected
+                    ? tab.activeClass
+                    : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-white/60"
+                }`}
+              >
+                {tab.icon}
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Active Tab Banner */}
+        <div className={`p-4 rounded-2xl border ${current.accentBg}`}>
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+            <h4 className="text-lg font-bold text-gray-900 font-inter">
+              {current.title}
+            </h4>
+            <span
+              className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${current.badgeColor}`}
+            >
+              {current.badge}
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+            {current.tagline}
+          </p>
+        </div>
+
+        {/* 3 Step Guide Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          {current.steps.map((step) => (
+            <div
+              key={step.num}
+              className="bg-white rounded-2xl p-4 border border-gray-200 shadow-sm flex flex-col justify-between hover:border-gray-300 transition-all"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span
+                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-extrabold ${current.stepNumBg}`}
+                  >
+                    {step.num}
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                    Step {step.num}
+                  </span>
+                </div>
+                <h5 className="text-sm font-bold text-gray-900 mb-1.5 font-inter">
+                  {step.title}
+                </h5>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  {step.desc}
+                </p>
+              </div>
+              <div className="mt-3 pt-2.5 border-t border-gray-100">
+                <span className="text-[11px] font-semibold text-gray-500 flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                  <span className="truncate">{step.highlight}</span>
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Friendly Pro-Tip Alert */}
+        <div className="bg-amber-50/80 border border-amber-200/70 rounded-2xl p-4 flex items-start gap-3 text-amber-900 text-xs sm:text-sm leading-relaxed">
+          <div className="p-1.5 bg-amber-100 text-amber-700 rounded-lg flex-shrink-0 mt-0.5">
+            <Lightbulb className="w-4 h-4" />
+          </div>
+          <div>
+            <span className="font-bold text-amber-900 block mb-0.5">Friendly Doctor's Tip:</span>
+            <span>{current.tip}</span>
+          </div>
+        </div>
+
+        {/* Action Row & Privacy Note */}
+        <div className="pt-2 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+            <span>100% Private & Safe. Your data is never shared.</span>
+          </div>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-xs font-semibold hover:bg-gray-50 transition-colors cursor-pointer"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              onClick={handleLaunch}
+              className={`w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-xs shadow-md transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer transform active:scale-95 ${current.buttonColor}`}
+            >
+              <span>Try this calculator</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </Modal>
+  );
+};
+
 
 const MenstrualCalendar = ({ predictions }) => {
   const defaultMonth = predictions?.nextPeriodDate
@@ -391,11 +712,17 @@ const MenstrualTrackerModal = ({
 
   // POST (calculate)
   const handlePrediction = async () => {
+    const cycle = Number(localFormData.cycleLength);
+    if (!localFormData.lastPeriodDate || isNaN(cycle) || cycle <= 0) {
+      alert("Please enter a valid positive cycle length.");
+      return;
+    }
+
     try {
       setLoading(true);
       const res = await api.post("/menstrual-cycle-tracker", {
         lastPeriodDate: localFormData.lastPeriodDate,
-        cycleLength: Number(localFormData.cycleLength),
+        cycleLength: cycle,
       });
       setPredictions(res.data.data);
     } catch (error) {
@@ -448,13 +775,16 @@ const MenstrualTrackerModal = ({
           <FormInput
             label="Cycle Length (Days)"
             type="number"
+            min="1"
+            onKeyDown={handleNumberKeyDown}
             value={localFormData.cycleLength}
-            onChange={(e) =>
+            onChange={(e) => {
+              const val = e.target.value.replace(/[^0-9]/g, "");
               setLocalFormData({
                 ...localFormData,
-                cycleLength: e.target.value,
-              })
-            }
+                cycleLength: val,
+              });
+            }}
           />
         </div>
 
@@ -807,7 +1137,12 @@ const PregnancyCalculatorModal = ({
   };
 
   const handleCalculate = () => {
-    fetchCalculatedData(formData.lastPeriodDate, formData.cycleLength);
+    const cycle = Number(formData.cycleLength || 28);
+    if (isNaN(cycle) || cycle <= 0) {
+      alert("Cycle length must be a positive number.");
+      return;
+    }
+    fetchCalculatedData(formData.lastPeriodDate, cycle);
   };
 
   const handleClear = () => {
@@ -907,10 +1242,13 @@ const PregnancyCalculatorModal = ({
               <FormInput
                 type="number"
                 label="Cycle Length (Days)"
+                min="1"
+                onKeyDown={handleNumberKeyDown}
                 value={formData.cycleLength || "28"}
-                onChange={(e) =>
-                  setLocalFormData({ ...formData, cycleLength: e.target.value })
-                }
+                onChange={(e) => {
+                  const val = e.target.value.replace(/[^0-9]/g, "");
+                  setLocalFormData({ ...formData, cycleLength: val });
+                }}
               />
             </div>
             <Button
@@ -1228,11 +1566,18 @@ const BMICalculatorModal = ({ isOpen, onClose, formData: initialFormData }) => {
 
   // 🔹 POST calculate BMI
   const handleCalculate = async () => {
+    const h = Number(localFormData.height);
+    const w = Number(localFormData.weight);
+    if (!h || !w || isNaN(h) || isNaN(w) || h <= 0 || w <= 0) {
+      alert("Please enter valid positive numbers for height and weight.");
+      return;
+    }
+
     try {
       setLoading(true);
       const res = await api.post("/bmi", {
-        height: Number(localFormData.height),
-        weight: Number(localFormData.weight),
+        height: h,
+        weight: w,
       });
 
       setResult(res.data.data);
@@ -1253,18 +1598,24 @@ const BMICalculatorModal = ({ isOpen, onClose, formData: initialFormData }) => {
             <FormInput
               label="Height (cm)"
               type="number"
+              min="1"
+              onKeyDown={handleNumberKeyDown}
               value={localFormData.height}
-              onChange={(e) =>
-                setLocalFormData({ ...localFormData, height: e.target.value })
-              }
+              onChange={(e) => {
+                const val = e.target.value.replace(/[^0-9.]/g, "");
+                setLocalFormData({ ...localFormData, height: val });
+              }}
             />
             <FormInput
               label="Weight (kg)"
               type="number"
+              min="1"
+              onKeyDown={handleNumberKeyDown}
               value={localFormData.weight}
-              onChange={(e) =>
-                setLocalFormData({ ...localFormData, weight: e.target.value })
-              }
+              onChange={(e) => {
+                const val = e.target.value.replace(/[^0-9.]/g, "");
+                setLocalFormData({ ...localFormData, weight: val });
+              }}
             />
           </div>
 
@@ -1337,8 +1688,9 @@ const HealthCalculator = () => {
           name: "cycleLength",
           label: "Cycle Length (Days)",
           type: "number",
-          placeholder: "Enter cycle length",
+          placeholder: "Enter cycle length (e.g. 28)",
           required: true,
+          extraProps: { min: "1", onKeyDown: handleNumberKeyDown }
         },
       ],
     },
@@ -1358,9 +1710,10 @@ const HealthCalculator = () => {
         },
         {
           name: "cycleLength",
-          label: "Cycle Length (optional)",
-          type: "text",
-          placeholder: "28 days",
+          label: "Cycle Length (Days)",
+          type: "number",
+          placeholder: "28",
+          extraProps: { min: "1", onKeyDown: handleNumberKeyDown }
         },
       ],
     },
@@ -1374,22 +1727,32 @@ const HealthCalculator = () => {
         {
           name: "height",
           label: "Height (cm)",
-          type: "text",
+          type: "number",
           placeholder: "Enter height",
           required: true,
+          extraProps: { min: "1", onKeyDown: handleNumberKeyDown }
         },
         {
           name: "weight",
           label: "Weight (kg)",
-          type: "text",
+          type: "number",
           placeholder: "Enter weight",
           required: true,
+          extraProps: { min: "1", onKeyDown: handleNumberKeyDown }
         },
       ],
     },
   ];
 
-  const handleCalculate = (calculatorId, formData) => {
+  const [guideModalOpen, setGuideModalOpen] = useState(false);
+  const [guideTab, setGuideTab] = useState("menstrual");
+
+  const handleOpenGuide = (tab = "menstrual") => {
+    setGuideTab(tab);
+    setGuideModalOpen(true);
+  };
+
+  const handleCalculate = (calculatorId, formData = {}) => {
     setActiveCalculator(calculatorId);
     setCalculatorData(formData);
     setModalOpen(true);
@@ -1398,15 +1761,31 @@ const HealthCalculator = () => {
   return (
     <div className="h-auto py-8 px-4 sm:px-6 lg:px-8 pb-4">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <h1 className=" sm:text-4xl  text-black mb-2 title">
             Advanced Health <span className="text-gold">Calculators</span>
           </h1>
-          <p className="sub-title sm:text-base text-gray-600 mb-1">
+          <p className="sub-title sm:text-base text-gray-600 mb-2">
             Get instant, professional-grade insights into your health with our
             comprehensive calculators
           </p>
-          <p className="text-xs text-gray-500 flex items-center justify-center gap-1">
+
+          {/* Friendly Guide Trigger Button */}
+          <div className="flex justify-center items-center gap-3 my-3">
+            <button
+              type="button"
+              onClick={() => handleOpenGuide("menstrual")}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 hover:from-purple-100 hover:to-pink-100 border border-purple-200 text-[#6B3FA0] font-bold text-xs sm:text-sm shadow-sm transition-all duration-200 hover:shadow hover:scale-[1.02] cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 text-purple-600 animate-pulse" />
+              <span>How to Use These Calculators</span>
+              <span className="bg-purple-200/80 text-purple-900 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                Quick Guide
+              </span>
+            </button>
+          </div>
+
+          <p className="text-xs text-gray-500 flex items-center justify-center gap-1 mt-2">
             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fillRule="evenodd"
@@ -1429,10 +1808,18 @@ const HealthCalculator = () => {
               fields={calc.fields}
               calculatorId={calc.id}
               onCalculate={handleCalculate}
+              onOpenGuide={handleOpenGuide}
             />
           ))}
         </div>
       </div>
+
+      <HowToUseModal
+        isOpen={guideModalOpen}
+        onClose={() => setGuideModalOpen(false)}
+        initialTab={guideTab}
+        onOpenCalculator={(id) => handleCalculate(id, {})}
+      />
 
       <MenstrualTrackerModal
         isOpen={modalOpen && activeCalculator === "menstrual"}

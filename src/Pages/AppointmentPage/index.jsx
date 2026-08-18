@@ -287,7 +287,7 @@ const AppointmentPage = () => {
       return;
     }
 
-    const whatsappNumber = "7708555635";
+    const whatsappNumber = "917708555635";
 
     const message = `
 New Appointment Request 🏥
@@ -589,7 +589,7 @@ New Appointment Request 🏥
                   <Phone className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Mobile</p>
-                    <p className="text-sm text-gray-600">7708555635</p>
+                    <a href="tel:+917708555635" className="text-sm text-gray-600 hover:text-purple-600 hover:underline">+91 77085 55635</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -603,14 +603,14 @@ New Appointment Request 🏥
                   <MessageCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">WhatsApp</p>
-                    <p className="text-sm text-gray-600">7708555635</p>
+                    <a href="https://wa.me/917708555635" target="_blank" rel="noreferrer" className="text-sm text-gray-600 hover:text-green-600 hover:underline">+91 77085 55635</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Mail className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Email</p>
-                    <p className="text-sm text-gray-600">info@vayushrihospital.com</p>
+                    <a href="mailto:vyushriivfhospital@gmail.com" className="text-sm text-gray-600 hover:text-blue-600 hover:underline break-all">vyushriivfhospital@gmail.com</a>
                   </div>
                 </div>
               </div>

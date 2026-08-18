@@ -33,9 +33,9 @@ const Support = () => {
                 variant="primary"
                 size="lg"
                 className="bg-purple-600 hover:bg-purple-700"
-                onClick={() => window.location.href = 'tel:7708555635'}
+                onClick={() => window.location.href = 'tel:+917708555635'}
               >
-                Emergency: 7708555635
+                Emergency: +91 77085 55635
               </Button>
               
               <Button

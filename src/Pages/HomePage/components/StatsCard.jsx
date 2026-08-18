@@ -7,18 +7,19 @@ const AnimatedNumber = ({ value, duration = 2000 }) => {
 
   useEffect(() => {
     // Parse the value: remove commas and '+'
-    const target = parseFloat(String(value).replace(/,/g, '').replace('+', ''));
-    if (isNaN(target)) {
-      setCurrentValue(value);
+    const rawTarget = parseFloat(String(value).replace(/,/g, '').replace('+', ''));
+    if (isNaN(rawTarget)) {
+      setCurrentValue(0);
       return;
     }
+    const target = Math.max(0, rawTarget);
 
     let startTimestamp = null;
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
 
-      const current = Math.floor(progress * target);
+      const current = Math.max(0, Math.floor(progress * target));
       setCurrentValue(current);
 
       if (progress < 1) {
@@ -33,18 +34,13 @@ const AnimatedNumber = ({ value, duration = 2000 }) => {
 
   // If the original value had a '+' or was a rating, format it back
   if (typeof value === 'string' && value.includes('+')) {
-    return <span>{currentValue.toLocaleString()}+</span>;
+    return <span>{Math.max(0, currentValue).toLocaleString()}+</span>;
   }
   if (value % 1 !== 0 || (typeof value === 'number' && value < 10)) {
-    // Handle ratings (e.g., 4.9)
-    const displayValue = (currentValue / 10).toFixed(1);
-    // This is a bit tricky for ratings, let's refine the logic:
-    // For simplicity, if it's the rating (usually < 10), we animate differently or just return the final for now
-    // Actually, let's just animate the decimal specifically if needed.
-    return <span>{value}</span>;
+    return <span>{Math.max(0, typeof value === 'number' ? value : parseFloat(value) || 0)}</span>;
   }
 
-  return <span>{currentValue.toLocaleString()}</span>;
+  return <span>{Math.max(0, currentValue).toLocaleString()}</span>;
 };
 
 const StatsCard = () => {
@@ -85,28 +81,28 @@ const StatsCard = () => {
   const stats = [
     {
       icon: Heart,
-      value: statsData.familiesHelped,
+      value: Math.max(0, Number(statsData.familiesHelped) || 0),
       suffix: "+",
       label: "Families Helped",
       iconColor: "text-purple-500"
     },
     {
       icon: Baby,
-      value: statsData.babiesDelivered,
+      value: Math.max(0, Number(statsData.babiesDelivered) || 0),
       suffix: "+",
       label: "Babies Delivered",
       iconColor: "text-purple-500"
     },
     {
       icon: Clock,
-      value: statsData.yearsExperience,
+      value: Math.max(0, Number(statsData.yearsExperience) || 0),
       suffix: "+",
       label: "Years Experience",
       iconColor: "text-purple-500"
     },
     {
       icon: Star,
-      value: statsData.googleRating,
+      value: Math.max(0, Math.min(5, Number(statsData.googleRating) || 0)),
       suffix: "",
       label: "Rated on Google",
       iconColor: "text-purple-500"

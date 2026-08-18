@@ -70,7 +70,7 @@ const HeroSection = () => {
             <div className="fixed bottom-6 right-6 z-50">
                 <button
                     className="bg-green-500 hover:bg-green-600 text-white rounded-full p-3 sm:p-4 shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200"
-                    onClick={() => window.open('https://wa.me/919876543210', '_blank')}
+                    onClick={() => window.open('https://wa.me/917708555635', '_blank')}
                     aria-label="Contact on WhatsApp"
                 >
                     <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />

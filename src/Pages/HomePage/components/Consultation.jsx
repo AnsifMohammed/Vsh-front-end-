@@ -180,10 +180,10 @@ const Consultation = () => {
                     <div>
                       <p className="text-sm font-semibold text-gray-900">Call Us</p>
                         <a
-                        href="tel:7708555635"
-                        className="text-sm text-purple-600 hover:underline"
+                        href="tel:+917708555635"
+                        className="text-sm text-purple-600 hover:underline font-semibold"
                       >
-                        7708555635
+                        +91 77085 55635
                       </a>
                       <p className="text-xs text-gray-500">24/7 Emergency Line</p>
                     </div>
@@ -195,10 +195,10 @@ const Consultation = () => {
                     <div>
                       <p className="text-sm font-semibold text-gray-900">Email</p>
                       <a
-                        href="mailto:info@vayushrihospital.com"
-                        className="text-sm text-purple-600 hover:underline"
+                        href="mailto:vyushriivfhospital@gmail.com"
+                        className="text-sm text-purple-600 hover:underline break-all"
                       >
-                        info@vayushrihospital.com
+                        vyushriivfhospital@gmail.com
                       </a>
                       <p className="text-xs text-gray-500">General Inquiries</p>
                     </div>
@@ -214,12 +214,12 @@ const Consultation = () => {
                     <div>
                       <p className="text-sm font-semibold text-gray-900">WhatsApp</p>
                       <a
-                        href="https://wa.me/7708555635"
+                        href="https://wa.me/917708555635"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-purple-600 hover:underline"
+                        className="text-sm text-purple-600 hover:underline font-semibold"
                       >
-                        7708555635
+                        +91 77085 55635
                       </a>
                       <p className="text-xs text-gray-500">Quick Response</p>
                     </div>
@@ -272,13 +272,13 @@ const Consultation = () => {
                     24/7 emergency services available for critical cases
                   </p>
                   <a
-                    href="tel:7708555635"
+                    href="tel:+917708555635"
                     className="card-sub-title inline-flex items-center justify-center
              text-yellow-700 border border-yellow-400
              px-3 py-1.5 rounded-md
-             hover:bg-yellow-100 transition-colors"
+             hover:bg-yellow-100 transition-colors font-semibold"
                   >
-                    Call Emergency Line
+                    Call Emergency: +91 77085 55635
                   </a>
                 </div>
               </div>

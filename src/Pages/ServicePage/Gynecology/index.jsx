@@ -229,8 +229,8 @@ function GynecologyPage() {
         description="Our expert team is here to guide you through your women's health journey with personalized care and support."
         primaryButtonText="Book Consultation"
         secondaryButtonText="WhatsApp"
-        phoneNumber="+919876543210"
-        whatsappNumber="+919876543210"
+        phoneNumber="+91 77085 55635"
+        whatsappNumber="+917708555635"
       />
 
     </div>
