@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import api from '../../../api/api';
 import { X, Eye, Edit2, Save, Image as ImageIcon } from 'lucide-react';
+import { toast } from '../../../Components/Common/ToastProvider';
 
 // Quill editor modules and formats
 const quillModules = {
@@ -93,13 +94,13 @@ const BlogForm = ({ blog, onClose, onSave }) => {
 
     // Validate file size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
-      alert('Image size must be less than 2MB');
+      toast.warning('Image size must be less than 2MB');
       return;
     }
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file');
+      toast.warning('Please select an image file');
       return;
     }
 
@@ -112,9 +113,10 @@ const BlogForm = ({ blog, onClose, onSave }) => {
         image: reader.result
       }));
       setUploadingImage(false);
+      toast.success('Image uploaded successfully');
     };
     reader.onerror = () => {
-      alert('Failed to read image file');
+      toast.error('Failed to read image file');
       setUploadingImage(false);
     };
     reader.readAsDataURL(file);
@@ -144,11 +146,12 @@ const BlogForm = ({ blog, onClose, onSave }) => {
       }
 
       if (response.data.success) {
+        toast.success(blog ? 'Blog post updated successfully!' : 'Blog post created successfully!');
         onSave(response.data.data);
       }
     } catch (error) {
       console.error('Error saving blog:', error);
-      alert(error.response?.data?.message || 'Failed to save blog post');
+      toast.error(error.response?.data?.message || 'Failed to save blog post');
     } finally {
       setIsSubmitting(false);
     }

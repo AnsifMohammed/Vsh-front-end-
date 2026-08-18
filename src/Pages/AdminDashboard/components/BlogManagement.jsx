@@ -18,6 +18,7 @@ import {
   BarChart3
 } from 'lucide-react';
 import BlogForm from './BlogForm';
+import { toast } from '../../../Components/Common/ToastProvider';
 
 const BlogManagement = () => {
   const [blogs, setBlogs] = useState([]);
@@ -115,12 +116,13 @@ const BlogManagement = () => {
     try {
       const response = await api.delete(`/admin/blogs/${id}`);
       if (response.data.success) {
+        toast.success('Blog post deleted successfully');
         setDeletingBlog(null);
         fetchBlogs();
         fetchStats();
       }
     } catch (err) {
-      alert('Failed to delete blog post');
+      toast.error('Failed to delete blog post');
       console.error(err);
     }
   };
@@ -129,11 +131,12 @@ const BlogManagement = () => {
     try {
       const response = await api.put(`/admin/blogs/${id}/publish`);
       if (response.data.success) {
+        toast.success('Blog publish status updated');
         fetchBlogs();
         fetchStats();
       }
     } catch (err) {
-      alert('Failed to update publish status');
+      toast.error('Failed to update publish status');
       console.error(err);
     }
   };

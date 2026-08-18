@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Plus, ArrowUp, ArrowDown, Edit2, Trash2, X, Image as ImageIcon, Upload } from "lucide-react";
 import api from "../../../api/api";
+import { toast } from "../../../Components/Common/ToastProvider";
 
 export default function DoctorManagement() {
   const [doctors, setDoctors] = useState([]);
@@ -62,6 +63,10 @@ export default function DoctorManagement() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        toast.warning("Image size must be less than 2MB");
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result); // Set base64 string
@@ -86,19 +91,21 @@ export default function DoctorManagement() {
       if (editingDoctor) {
         const response = await api.put(`/admin/doctors/${editingDoctor._id}`, payload);
         if (response.data.success) {
+          toast.success("Doctor profile updated successfully!");
           setIsModalOpen(false);
           fetchDoctors();
         }
       } else {
         const response = await api.post("/admin/doctors", payload);
         if (response.data.success) {
+          toast.success("Doctor profile added successfully!");
           setIsModalOpen(false);
           fetchDoctors();
         }
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to save doctor details");
+      toast.error(err.response?.data?.message || "Failed to save doctor details");
     } finally {
       setSaving(false);
     }
@@ -109,11 +116,12 @@ export default function DoctorManagement() {
     try {
       const response = await api.delete(`/admin/doctors/${id}`);
       if (response.data.success) {
+        toast.success("Doctor profile deleted successfully");
         fetchDoctors();
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to delete doctor profile");
+      toast.error("Failed to delete doctor profile");
     }
   };
 

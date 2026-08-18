@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import BlogManagement from "./components/BlogManagement";
 import DoctorManagement from "./components/DoctorManagement";
+import { toast } from "../../Components/Common/ToastProvider";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -33,22 +34,28 @@ const AdminDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/admin/stats");
-      if (response.data.success) {
-        setStats(response.data.data.stats);
-        setRecentAppointments(response.data.data.recentAppointments);
-        // Calculate unique doctors from appointments by specialty
-        const uniqueSpecialties = new Set(
-          response.data.data.appointmentsBySpecialty.map((a) => a._id),
-        );
-        setStats((prev) => ({
-          ...prev,
-          uniqueSpecialties: uniqueSpecialties.size,
-        }));
+      setError(null);
+
+      const [statsRes, appointmentsRes] = await Promise.all([
+        api.get("/admin/stats"),
+        api.get("/admin/appointments?limit=10"),
+      ]);
+
+      if (statsRes.data.success) {
+        setStats(statsRes.data.data.stats);
+        setRecentAppointments(statsRes.data.data.recentAppointments || []);
+      }
+
+      if (appointmentsRes.data.success) {
+        setAppointments(appointmentsRes.data.data);
       }
     } catch (err) {
-      setError("Failed to load dashboard data");
       console.error(err);
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Failed to load dashboard data"
+      );
     } finally {
       setLoading(false);
     }
@@ -56,18 +63,16 @@ const AdminDashboard = () => {
 
   const fetchAppointments = async () => {
     try {
-      setLoading(true);
-      const response = await api.get(
-        `/admin/appointments?status=${statusFilter}&limit=50`,
-      );
-      if (response.data.success) {
-        setAppointments(response.data.data);
+      const url =
+        statusFilter === "all"
+          ? "/admin/appointments"
+          : `/admin/appointments?status=${statusFilter}`;
+      const res = await api.get(url);
+      if (res.data.success) {
+        setAppointments(res.data.data);
       }
     } catch (err) {
-      setError("Failed to load appointments");
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -76,12 +81,13 @@ const AdminDashboard = () => {
       setUpdating(true);
       const response = await api.put(`/admin/appointments/${id}`, { status });
       if (response.data.success) {
+        toast.success(`Appointment status updated to ${status}`);
         // Refresh data
         fetchAppointments();
         fetchDashboardData();
       }
     } catch (err) {
-      alert("Failed to update appointment status");
+      toast.error("Failed to update appointment status");
       console.error(err);
     } finally {
       setUpdating(false);
@@ -94,11 +100,12 @@ const AdminDashboard = () => {
       setUpdating(true);
       const response = await api.delete(`/admin/appointments/${id}`);
       if (response.data.success) {
+        toast.success("Appointment deleted successfully");
         fetchAppointments();
         fetchDashboardData();
       }
     } catch (err) {
-      alert("Failed to delete appointment");
+      toast.error("Failed to delete appointment");
       console.error(err);
     } finally {
       setUpdating(false);

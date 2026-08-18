@@ -24,9 +24,9 @@ import {
 import { Calendar as PrimeCalendar } from "primereact/calendar";
 import Card from "../../../Components/Common/Card";
 import FormInput from "../../../Components/Common/FormInput";
-import Button from "../../../Components/Common/Button";
 import api from "../../../api/api";
 import babyImagepic from "../../../assets/OIP.webp";
+import { toast } from "../../../Components/Common/ToastProvider";
 
 // Helper to block minus, plus, and exponent keys on numeric inputs
 const handleNumberKeyDown = (e) => {
@@ -714,7 +714,7 @@ const MenstrualTrackerModal = ({
   const handlePrediction = async () => {
     const cycle = Number(localFormData.cycleLength);
     if (!localFormData.lastPeriodDate || isNaN(cycle) || cycle <= 0) {
-      alert("Please enter a valid positive cycle length.");
+      toast.warning("Please enter a valid positive cycle length.");
       return;
     }
 
@@ -725,8 +725,9 @@ const MenstrualTrackerModal = ({
         cycleLength: cycle,
       });
       setPredictions(res.data.data);
+      toast.success("Cycle predicted successfully!");
     } catch (error) {
-      alert("Failed to calculate cycle");
+      toast.error("Failed to calculate cycle predictions.");
     } finally {
       setLoading(false);
     }
@@ -1089,7 +1090,7 @@ const PregnancyCalculatorModal = ({
           savedWeek: selectedWeekTracker,
         }),
       );
-      alert("Pregnancy progress saved successfully!");
+      toast.success("Pregnancy progress saved successfully!");
     }
   };
 
@@ -1129,8 +1130,9 @@ const PregnancyCalculatorModal = ({
         cycleLength: Number(cycle) || 28,
       });
       setResult(res.data.data);
+      toast.success("Pregnancy estimated successfully!");
     } catch (error) {
-      alert("Failed to calculate pregnancy");
+      toast.error("Failed to calculate pregnancy milestones.");
     } finally {
       setLoading(false);
     }
@@ -1139,7 +1141,7 @@ const PregnancyCalculatorModal = ({
   const handleCalculate = () => {
     const cycle = Number(formData.cycleLength || 28);
     if (isNaN(cycle) || cycle <= 0) {
-      alert("Cycle length must be a positive number.");
+      toast.warning("Cycle length must be a positive number.");
       return;
     }
     fetchCalculatedData(formData.lastPeriodDate, cycle);
@@ -1569,7 +1571,7 @@ const BMICalculatorModal = ({ isOpen, onClose, formData: initialFormData }) => {
     const h = Number(localFormData.height);
     const w = Number(localFormData.weight);
     if (!h || !w || isNaN(h) || isNaN(w) || h <= 0 || w <= 0) {
-      alert("Please enter valid positive numbers for height and weight.");
+      toast.warning("Please enter valid positive numbers for height and weight.");
       return;
     }
 
@@ -1581,8 +1583,9 @@ const BMICalculatorModal = ({ isOpen, onClose, formData: initialFormData }) => {
       });
 
       setResult(res.data.data);
+      toast.success("BMI calculated successfully!");
     } catch (error) {
-      alert("Failed to calculate BMI");
+      toast.error("Failed to calculate BMI");
     } finally {
       setLoading(false);
     }
