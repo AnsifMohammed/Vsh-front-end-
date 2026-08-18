@@ -70,7 +70,7 @@ const Login = () => {
       <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
       {/* Container */}
-      <div className="w-full max-w-5xl bg-white/98 backdrop-blur-xl rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.5)] overflow-hidden grid grid-cols-1 md:grid-cols-12 border border-white/30 min-h-[640px] relative z-10">
+      <div className="w-full max-w-5xl bg-white/98 backdrop-blur-xl rounded-xl shadow-[0_25px_70px_rgba(0,0,0,0.5)] overflow-hidden grid grid-cols-1 md:grid-cols-12 border border-white/30 min-h-[640px] relative z-10">
         
         {/* Left Side: Brand Panel */}
         <div className="md:col-span-5 bg-gradient-to-br from-[#4A247A] via-[#6B3FA0] to-[#2B124C] p-8 sm:p-10 text-white flex flex-col justify-between relative overflow-hidden">
