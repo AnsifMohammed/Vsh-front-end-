@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, Phone, Calendar as CalendarIcon, Eye, EyeOff, ArrowRight, ShieldCheck, HeartPulse, CheckCircle2 } from 'lucide-react';
 import api from '../../api/api';
 import logo from '../../assets/vsh-logo-black.svg';
+import bgImage from '../../assets/home-hero.webp';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -73,9 +74,18 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-nunito">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 font-nunito relative overflow-hidden bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `linear-gradient(135deg, rgba(28, 10, 52, 0.88) 0%, rgba(74, 36, 122, 0.82) 45%, rgba(13, 4, 26, 0.94) 100%), url(${bgImage})`
+      }}
+    >
+      {/* Decorative ambient glowing orbs */}
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-purple-500/25 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
       {/* Container */}
-      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 border border-gray-100 min-h-[680px]">
+      <div className="w-full max-w-5xl bg-white/98 backdrop-blur-xl rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.5)] overflow-hidden grid grid-cols-1 md:grid-cols-12 border border-white/30 min-h-[680px] relative z-10">
         
         {/* Left Side: Brand Panel */}
         <div className="md:col-span-5 bg-gradient-to-br from-[#4A247A] via-[#6B3FA0] to-[#2B124C] p-8 sm:p-10 text-white flex flex-col justify-between relative overflow-hidden">

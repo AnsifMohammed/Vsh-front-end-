@@ -3,6 +3,7 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeOff, ArrowRight, ShieldCheck, KeyRound, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
 import api from '../../api/api';
 import logo from '../../assets/vsh-logo-black.svg';
+import bgImage from '../../assets/home-hero.webp';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -46,21 +47,15 @@ const ResetPassword = () => {
     verifyToken();
   }, [token]);
 
-  const calculatePasswordStrength = (pass) => {
-    let strength = 0;
-    if (pass.length >= 8) strength++;
-    if (pass.length >= 12) strength++;
-    if (/[a-z]/.test(pass) && /[A-Z]/.test(pass)) strength++;
-    if (/\d/.test(pass)) strength++;
-    if (/[^a-zA-Z0-9]/.test(pass)) strength++;
-    return strength;
-  };
-
-  const handlePasswordChange = (e) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    setPasswordStrength(calculatePasswordStrength(newPassword));
-  };
+  // Calculate password strength
+  useEffect(() => {
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+    setPasswordStrength(score);
+  }, [password]);
 
   const getStrengthColor = () => {
     if (passwordStrength <= 1) return 'bg-red-500';
@@ -79,14 +74,15 @@ const ResetPassword = () => {
     setLoading(true);
     setError('');
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
+    // Validation
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long');
       setLoading(false);
       return;
     }
 
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters long');
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
       setLoading(false);
       return;
     }
@@ -111,25 +107,37 @@ const ResetPassword = () => {
   // Loading state while verifying token
   if (verifying) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-nunito">
-        <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 text-center max-w-sm w-full">
-          <div className="w-12 h-12 border-4 border-[#6B3FA0]/20 border-t-[#6B3FA0] rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-700 font-medium text-sm">Verifying password reset link...</p>
+      <div 
+        className="min-h-screen flex items-center justify-center p-4 font-nunito relative overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `linear-gradient(135deg, rgba(28, 10, 52, 0.88) 0%, rgba(74, 36, 122, 0.82) 45%, rgba(13, 4, 26, 0.94) 100%), url(${bgImage})`
+        }}
+      >
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/30 text-center max-w-sm w-full">
+          <div className="w-12 h-12 border-4 border-[#6B3FA0] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Verifying reset link...</p>
         </div>
       </div>
     );
   }
 
-  // Invalid token state
+  // Invalid Token State
   if (!tokenValid && !verifying) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-nunito">
-        <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-2xl border border-gray-100 max-w-md w-full text-center">
-          <div className="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-red-200">
+      <div 
+        className="min-h-screen flex items-center justify-center p-4 font-nunito relative overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `linear-gradient(135deg, rgba(28, 10, 52, 0.88) 0%, rgba(74, 36, 122, 0.82) 45%, rgba(13, 4, 26, 0.94) 100%), url(${bgImage})`
+        }}
+      >
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/30 text-center max-w-md w-full">
+          <div className="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 font-inter mb-2">Invalid or Expired Link</h2>
-          <p className="text-gray-600 text-sm mb-6 leading-relaxed">{error}</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2 font-inter">Invalid or Expired Link</h2>
+          <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+            {error || 'This password reset link is invalid or has expired. Please request a new one.'}
+          </p>
           <Link
             to="/forgotpassword"
             className="inline-block w-full bg-gradient-to-r from-[#6B3FA0] to-[#7A48B7] hover:opacity-95 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-[#6B3FA0]/25 transition-all text-sm"
@@ -142,9 +150,18 @@ const ResetPassword = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-nunito">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 font-nunito relative overflow-hidden bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `linear-gradient(135deg, rgba(28, 10, 52, 0.88) 0%, rgba(74, 36, 122, 0.82) 45%, rgba(13, 4, 26, 0.94) 100%), url(${bgImage})`
+      }}
+    >
+      {/* Decorative ambient glowing orbs */}
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-purple-500/25 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
       {/* Main Container */}
-      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 border border-gray-100 min-h-[600px]">
+      <div className="w-full max-w-5xl bg-white/98 backdrop-blur-xl rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.5)] overflow-hidden grid grid-cols-1 md:grid-cols-12 border border-white/30 min-h-[600px] relative z-10">
         
         {/* Left Side: Brand Panel */}
         <div className="md:col-span-5 bg-gradient-to-br from-[#4A247A] via-[#6B3FA0] to-[#2B124C] p-8 sm:p-10 text-white flex flex-col justify-between relative overflow-hidden">
